@@ -1,2 +1,1 @@
-# algorithm
-ALT: Algorithms Learned Today
+# ALT: Algorithms Learned Today
