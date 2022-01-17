@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = class Queue<T> {
+class Queue<T> {
     private queue: Array<T>
 
     constructor(...items: Array<T>) {

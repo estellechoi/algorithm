@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = class Stack<T> {
+class Stack<T> {
   private items: Array<T>
 
   constructor(...items: Array<T>) {
