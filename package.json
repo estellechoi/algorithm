@@ -1,15 +1,16 @@
 {
   "name": "algorithm",
-  "version": "1.0.0",
-  "main": "index.js",
   "repository": "https://github.com/estellechoi/algorithm.git",
   "author": "Yujin Choi",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^17.0.8",
+    "@types/node": "^17.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
     "eslint": "^8.7.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "ts-node": "^10.4.0"
   },
   "dependencies": {
     "typescript": "^4.5.4"
