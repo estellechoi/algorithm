@@ -3,8 +3,8 @@
 class Stack<T> {
   private items: Array<T>
 
-  constructor(...items: Array<T>) {
-    this.items = [...items]
+  constructor() {
+    this.items = []
   }
 
   public getTop() {
