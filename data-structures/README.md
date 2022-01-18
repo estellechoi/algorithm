@@ -300,3 +300,4 @@ function dfs(graph: number[][], startNode: number) {
 - [Big O notation | Wikipedia](https://en.wikipedia.org/wiki/Big_O_notation)
 - [What is a Linked List? Linked List vs Array - YOON MI KIM](https://medium.com/@yk392/what-is-a-linked-list-linked-list-vs-array-92f0db4015cc)
 - [Simplifying Functional Programming with Recursion (Javascript) - Meghan Hein](https://medium.com/weekly-webtips/simplifying-functional-programming-with-recursion-javascript-aa7007f4b159)
+- [Depth-First Search in TypeScript](https://www.devmaking.com/learn/algorithms/depth-first-search/typescript/)
