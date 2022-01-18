@@ -6,7 +6,8 @@
 4. Linked List
 5. Tree
 6. Graph
-7. Hash Table (Map)
+7. DFS & BFS
+8. Hash Table (Map)
 
 ## 1. Stack & Queue
 
@@ -185,9 +186,9 @@ Graph에서 다음 개념들을 알아둬야 합니다. 위의 Tree 섹션에서
 
 ![Graph](./../assets/graph.png)
 
-Graph 자료구조를 코드에서 다루기 위해서는 명확한 표현 방법이 필요한데, 그 중 하나가 [Adjency Matrix](https://en.wikipedia.org/wiki/Adjacency_matrix) 입니다. 만약 위와 같이 3 개의 노드로 구성된 Graph가 있다면, 각 노드간의 관계를 Matrix로 나타낼 수 있다는 아이디어입니다. 노드를 잇는 각 엣지에 번호를 매긴 후 다음과 같이 정리할 수 있습니다.
+Graph 자료구조를 코드에서 다루기 위해서는 명확한 표현 방법이 필요한데, 그 중 하나가 [Adjacency Matrix](https://en.wikipedia.org/wiki/Adjacency_matrix) 입니다. 만약 위와 같이 3 개의 노드로 구성된 Graph가 있다면, 각 노드간의 관계를 Matrix로 나타낼 수 있다는 아이디어입니다. 노드를 잇는 각 엣지에 번호를 매긴 후 다음과 같이 정리할 수 있습니다.
 
-![Adjency Matrix](./../assets/graph-matrix.png)
+![Adjacency Matrix](./../assets/graph-matrix.png)
 
 이 Matrix는 코드에서 이차원배열을 사용해서 다음과 같이 표현합니다.
 
@@ -230,7 +231,64 @@ const filtered = node1.filter(item => item[0] === 2)
 
 - [Leetcode graph problems](https://leetcode.com/tag/graph/)
 
-## 7. Hash Table (Map)
+## 7. DFS & BFS
+
+DFS/BFS는 탐색 알고리즘 중에서도 자주 언급되는 것들인데, 탐색 방향에 있어 각각 Depth/Breadth 기준으로 First Search(우선 탐색)하는 알고리즘입니다. 다음 그래프를 `1`부터 DFS, BFS 해보면서 정리해보려고 합니다. 자식 노드 중에서는 숫자가 작은 노드부터 순회합니다.
+
+![Graph](./../assets/graph-search.png)
+
+### 7-1. DFS
+
+위의 그래프를 DFS하면 데이터를 이렇게 추출할 수 있습니다. 일단 하나의 자식 노드를 탐색하기 시작하면, 해당 자식이 갖고있는 하위 Tree를 모두 탐색한 후에 그 다음 형제 노드의 탐색을 시작합니다. DFS를 코드로 구현할 때는 Stack을 사용하는데요, 루트에서 순회를 시작하여 마주치는 노드들을 Stack에 쌓아두고 가장 하위의 노드부터 추출하겠다는 아이디어입니다. Stack은 함수 호출 스택을 사용하는 Recursion으로 대체할 수 있습니다.
+
+```
+1 → 2 → 7 → 6 → 8 → 3 → 4 → 5
+```
+
+#### Stack
+
+```typescript
+function dfs(graph: number[][], startNode: number) {
+    const stack: number[] = []
+    const visited: Set = new Set()
+
+    visited.add(startNode)
+    stack.push(startNode)
+
+    while (stack.length > 0) {
+        const node = stack.pop() // 역순으로 다시 올라가자
+        for (let adj of graph[node]) {
+            if (!visited.has(adj)) {
+                stack.push(adj) // 자식들을 스택에 넣어주자 (큰 수 부터 넣어서, 작은 수부터 꺼내서 깊이 탐색을 해야함)
+                visited.add(adj) // 방문 처리
+            }
+        }
+    }
+}
+
+dfs(graph, 1)
+```
+
+#### Recursion
+
+위에서 Loop로 구현한 DFS 함수는 Stack을 Recursion으로 대체해서 다음과 같이 리팩토링할 수 있습니다.
+
+```typescript
+function dfsAux(graph: number[][], adj: number, visited: boolean[]) {
+    visited[adj] = true
+
+    for (let adj of graph[adj]) {
+        if (!visited[adj]) dfsAux(graph, adj, visited)
+    }
+}
+
+function dfs(graph: number[][], startNode: number) {
+    let visited: boolean[] = []
+    dfsAux(graph, startNode, visited)
+}
+```
+
+## 8. Hash Table (Map)
 
 ---
 
