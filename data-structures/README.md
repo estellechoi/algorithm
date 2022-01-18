@@ -112,17 +112,25 @@ JavaScript에서 호출되는 모든 함수는 하나의 호출 스택에 쌓입
 
 ## 5. Tree
 
-Tree 자료구는 [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)을 생각하면 됩니다. 루트 노드인 `html`을 시작으로 자식 노드들이 계층 형태로 파생되는 구조입니다.
+Tree 자료구는 [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)을 생각하면 됩니다. 루트 노드인 `html`을 시작으로 자식 노드들이 계층 형태로 파생되는 것이 DOM의 형태이죠. DOM은 Tree 자료구조를 사용합니다.
 
 ### 5-1. BST(Binary Search Tree)
 
-[BST, 이진탐색트리](https://leetcode.com/explore/learn/card/introduction-to-data-structure-binary-search-tree/)는 최대 2개의 자식 노드만 허용하는 Tree로, Tree에 데이터를 넣을 때 다음 규칙에 따라 정렬하는 것이 특징입니다. BST의 가장 작은 값은 가장 왼쪽 끝 노드에, 가장 큰 값은 가장 오른쪽 끝 노드에서 바로 찾을 수 있습니다.
+[BST, 이진탐색트리](https://leetcode.com/explore/learn/card/introduction-to-data-structure-binary-search-tree/)는 최대 2개의 자식 노드만 허용하는 Tree로, Tree에 데이터를 넣을 때 다음 규칙을 따르는 것이 특징입니다. 나름의 정렬 방식인건데, 이 방식 덕분에 BST의 가장 작은 값은 가장 왼쪽 끝 노드에, 가장 큰 값은 가장 오른쪽 끝 노드에서 바로 찾을 수 있습니다.
 
 - 왼쪽 자식 트리는 부모 노드보다 작은 값만 포함합니다.
-- 오쪽 자식 트리는 부모 노드보다 큰 값만 포함합니다.
+- 오른쪽 자식 트리는 부모 노드보다 큰 값만 포함합니다.
 - 중복된 값을 허용하지 않습니다.
 
+<br />
+
 ![BST](./../assets/bst.png)
+
+<br />
+
+사진출처: [Data Structure(2)(Tree, Hash table, Graph, Binary Search Tree) - Hwanseog Choi](https://medium.com/@hwanseogchoi/data-structure-2-tree-hash-table-graph-binary-search-tree-d5fdfa6afc5e)
+
+<br />
 
 ### 5-2. DFT(Depth-First Traversal)
 
@@ -162,6 +170,65 @@ Tree의 깊이보다 너비가 클 때는 BFT가 더 나은 선택일 수 있습
 - [Leetcode binary tree problems](https://leetcode.com/tag/binary-tree/)
 
 ## 6. Graph
+
+Graph 자료구조는 여러 관점에서 설명할 수 있는데, 가장 간단하게 Tree 자료구조에서 "부모 노드는 하나만 가질 수 있다"는 규칙을 제외하면 Graph 자료구조가 됩니다. _many-to-many_ 관계인 데이터들을 담아야할 때 Graph 자료구조가 사용됩니다.
+
+![Node](./../assets/node.png)
+
+Graph에서 다음 개념들을 알아둬야 합니다. 위의 Tree 섹션에서 언급했던 용어들이고, 동일한 개념입니다.
+
+- 노드 : Graph의 각 지점
+- 엣지 : 노드와 노드를 연결하는 선으로 관계를 나타냄
+- Adjacent : 두 노드가 엣지를 통해 직접 연결되어 있으면, 두 노드는 Adjacent(인접)하다고 함
+
+### 6-1. Adjacency Matrix
+
+![Graph](./../assets/graph.png)
+
+Graph 자료구조를 코드에서 다루기 위해서는 명확한 표현 방법이 필요한데, 그 중 하나가 [Adjency Matrix](https://en.wikipedia.org/wiki/Adjacency_matrix) 입니다. 만약 위와 같이 3 개의 노드로 구성된 Graph가 있다면, 각 노드간의 관계를 Matrix로 나타낼 수 있다는 아이디어입니다. 노드를 잇는 각 엣지에 번호를 매긴 후 다음과 같이 정리할 수 있습니다.
+
+![Adjency Matrix](./../assets/graph-matrix.png)
+
+이 Matrix는 코드에서 이차원배열을 사용해서 다음과 같이 표현합니다.
+
+```typescript
+type Nullable<T> = T | null;
+
+const graph: Nullable<number>[][] = [
+    [0, 5, 7],
+    [5, 0, null],
+    [7, null, 0],
+]
+```
+
+만약 노드 `0`과 노드 `2`의 연결 관계를 알고싶다면, `graph[0][2]`로 접근하면 되기 때문에, 두 노드의 관계를 간편하게 확인하고 싶을 때 최고의 방법입니다.
+
+```typescript
+console.log(graph[0][2]) // 7
+```
+
+### 6-2. Adjancency List
+
+[Adjancency List](https://en.wikipedia.org/wiki/Adjacency_list)는 Matrix와 달리 List 관점에서 Graph 자료구조를 바라보는 방법으로, 3차원배열로 나타냅니다. 두 노드간에 아무런 관계가 없다면 데이터를 저장하지 않습니다.
+
+```typescript
+const graph: number[][][] = [
+    [[1, 5], [2, 7]],
+    [[0, 5]],
+    [[0, 7]],
+]
+```
+
+만약 노드 `1`과 노드 `2`의 연결 관계를 알고싶다면, 다음과 같이 인접하는 노드 정보를 순회하면서 확인해야 합니다. 직관적인 확인은 어렵지만, 실제로 연결된 정보만 저장하기 때문에 메모리 사용에는 이점이 있습니다. 따라서 어차피 특정 노드와 연결된 모든 노드들을 순회하면서 검사해야하는 경우라면, Matrix보다 메모리와 순회를 절약할 수 있는 List가 더 적합합니다.
+
+```typescript
+const node1: number[][] = graph[1] // [[0, 5]]
+const filtered = node1.filter(item => item[0] === 2)
+```
+
+### 6-🍎. What's next
+
+- [Leetcode graph problems](https://leetcode.com/tag/graph/)
 
 ## 7. Hash Table (Map)
 
