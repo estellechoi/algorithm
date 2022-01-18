@@ -112,6 +112,50 @@ JavaScript에서 호출되는 모든 함수는 하나의 호출 스택에 쌓입
 
 ## 5. Tree
 
+Tree 자료구는 [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)을 생각하면 됩니다. 루트 노드인 `html`을 시작으로 자식 노드들이 계층 형태로 파생되는 구조입니다.
+
+### 5-1. BST(Binary Search Tree)
+
+[BST, 이진탐색트리](https://leetcode.com/explore/learn/card/introduction-to-data-structure-binary-search-tree/)는 최대 2개의 자식 노드만 허용하는 Tree로, Tree에 데이터를 넣을 때 다음 규칙에 따라 정렬하는 것이 특징입니다. BST의 가장 작은 값은 가장 왼쪽 끝 노드에, 가장 큰 값은 가장 오른쪽 끝 노드에서 바로 찾을 수 있습니다.
+
+- 왼쪽 자식 트리는 부모 노드보다 작은 값만 포함합니다.
+- 오쪽 자식 트리는 부모 노드보다 큰 값만 포함합니다.
+- 중복된 값을 허용하지 않습니다.
+
+![BST](./../assets/bst.png)
+
+### 5-2. DFT(Depth-First Traversal)
+
+DFT는 Tree를 Vertically 순회하는 방법으로 보통 다음의 3가지로 나누어 이야기합니다. 코드에서는 Recursion 사용이 강조됩니다.
+
+#### Pre-order
+
+위에서 생성한 Tree를 Pre-order 방법으로 순회하면 다음과 같이 데이터를 추출할 수 있습니다. 부모 → 왼쪽 → 오른쪽 자식 순으로 데이터를 추출하는데, Tree를 순회하면서 부모 노드를 만나면 즉시 추출하는 방식입니다.
+
+```
+43 → 10 → 9 → 12 → 11 → 79 → 54 → 50 → 90
+```
+
+#### In-order
+
+In-order 방법은 왼쪽 → 부모 → 오른쪽 자식 순으로 데이터를 추출합니다. 왼쪽 Tree를 먼저 추출한 후 오른쪽 Tree로 넘어가기 전에 부모 노드를 추출합니다. In-order 순회 방법은 BST에서 찰떡인데, 아래와 같이 추출 과정에서 데이터가 자동으로 정렬되기 때문입니다.
+
+```
+9 → 10 → 11 → 12 → 43 → 50 → 54 → 79 → 90
+```
+
+#### Post-order
+
+왼쪽 → 오른쪽 → 부모 순으로 데이터를 추출합니다.
+
+```
+9 → 11 → 12 → 10 → 50 → 54 → 90 → 79 → 43
+```
+
+### 5-3. BFT(Breadth-First Traversal)
+
+Tree의 깊이보다 너비가 클 때는 BFT가 더 나은 선택일 수 있습니다. 이때 Queue를 사용하고, DFT와 다르게 Recursion 보다는 Loop 사용이 효율적입니다.
+
 ### 5-🍎. What's next
 
 - [Leetcode binary tree overview](https://leetcode.com/explore/learn/card/data-structure-tree/)
