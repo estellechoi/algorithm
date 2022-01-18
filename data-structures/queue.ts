@@ -1,17 +1,27 @@
+// Circular Queue
 'use strict'
 
 class Queue<T> {
     private queue: Array<T>
+    private size: number
 
-    constructor(...items: Array<T>) {
-        this.queue = [...items]
+    constructor(size: number) {
+        this.queue = []
+        this.size = size
     }
 
-    public enqueue(item: T) {
-        return this.queue.unshift(item)
+    enqueue(item: T): T | null {
+        if (this.isFull()) return null
+            
+        this.queue.unshift(item)
+        return item
     }
 
-    public dequeue() {
-        return this.queue.shift()
+    dequeue(): T | null {
+        return this.queue.pop() ?? null
+    }
+
+    isFull(): boolean {
+        return this.queue.length === this.size
     }
 }

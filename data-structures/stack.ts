@@ -1,29 +1,26 @@
 'use strict'
 
 class Stack<T> {
-  private items: Array<T>
+  private stack: Array<T>
+  private size: number
 
-  constructor() {
-    this.items = []
+  constructor(size: number) {
+    this.stack = []
+    this.size = size
   }
 
-  public getTop() {
-    return this.items.length ? this.items[this.items.length - 1] : null
+  push(item: T): T | null {
+    if (this.isFull()) return null
+
+    this.stack.push(item)
+    return item
   }
 
-  public isEmpty() {
-    return this.items.length === 0
+  pop(): T | null {
+    return this.stack.pop() ?? null
   }
 
-  public size() {
-    return this.items.length
-  }
-
-  public push(item: T) {
-    this.items.push(item)
-  }
-
-  public pop(): T | null {
-    return this.items.pop() ?? null
+  isFull(): boolean {
+    return this.stack.length === this.size
   }
 }
