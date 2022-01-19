@@ -240,9 +240,9 @@ console.log(graph[0][2]) // 7
 
 <br />
 
-### 6-2. Adjancency List
+### 6-2. Adjacency List
 
-[Adjancency List](https://en.wikipedia.org/wiki/Adjacency_list)는 Matrix와 달리 List 관점에서 Graph 자료구조를 바라보는 방법으로, 두 노드간에 아무런 관계가 없다면 데이터를 저장하지 않습니다.
+[Adjacency List](https://en.wikipedia.org/wiki/Adjacency_list)는 Matrix와 달리 List 관점에서 Graph 자료구조를 바라보는 방법으로, 두 노드간에 아무런 관계가 없다면 데이터를 저장하지 않습니다.
 
 ```typescript
 const graph: number[][][] = [
@@ -252,12 +252,34 @@ const graph: number[][][] = [
 ]
 ```
 
-만약 노드 `1`과 노드 `2`의 연결 관계를 알고싶다면, 다음과 같이 인접하는 노드 정보를 순회하면서 확인해야 합니다. 직관적인 확인은 어렵지만, 실제로 연결된 정보만 저장하기 때문에 Matrix에 비해 메모리 사용에 이점이 있습니다. 따라서 특정 노드와 연결된 모든 노드들을 순회하면서 검사해야하는 경우라면, Matrix보다 메모리와 순회를 절약할 수 있는 List가 더 적합합니다.
+만약 노드 `0`과 노드 `2`의 연결 관계를 알고싶다면, 다음과 같이 인접하는 노드 정보를 순회하면서 확인해야 합니다. 직관적인 확인은 어렵지만, 실제로 연결된 정보만 저장하기 때문에 Matrix에 비해 메모리 사용에 이점이 있습니다. 따라서 특정 노드와 연결된 모든 노드들을 순회하면서 검사해야하는 경우라면, Matrix보다 메모리와 순회를 절약할 수 있는 List가 더 적합합니다.
 
 ```typescript
-const node1: number[][] = graph[1] // [[0, 5]]
-const filtered = node1.filter(item => item[0] === 2)
+const node1: number[][] = graph[0] // [[1, 5], [2, 7]]
+const filtered = node1.filter(item => item[0] === 2) // [[2, 7]] → 7
 ```
+
+<br />
+
+Adjacency List는 다음과 같이 노드들의 인접 여부만 나타낼 수도 있습니다.
+
+```typescript
+const graph: number[][] = [
+    [1, 2],
+    [0],
+    [0],
+]
+```
+
+<br />
+
+### 6-3. Matrix vs List
+
+상황에 따라 Matrix와 List 형태 중 더 나은 것을 선택해서 사용하면 됩니다. 각각의 장단점을 정리해보면,
+
+- Matrix: 모든 노드와 노드의 관계를 나타내기 위해 메모리를 절약할 수 없지만, 특정한 두 노드의 관계를 알고싶다면 한 번에 접근할 수 있음
+
+- List: 실제 연결이 있는 경우에만 연결 정보를 담으면 되므로 메모리 절약, 특정한 두 노드의 관계를 알기 위해서는 인접 노드들을 순회하면서 찾아야하므로 느릴 수 있음
 
 <br />
 
@@ -269,7 +291,7 @@ const filtered = node1.filter(item => item[0] === 2)
 
 ## 7. DFS & BFS
 
-DFS/BFS는 탐색 알고리즘 중에서도 자주 언급되는 것들인데, 탐색 방향에 있어 각각 Depth/Breadth 기준으로 First Search(우선 탐색)하는 알고리즘입니다. 다음 그래프를 `1` 노드부터 DFS, BFS 해보면서 정리해보려고 합니다. 같은 레벨의 노드 중에서는 숫자가 작은 노드부터 순회합니다.
+DFS/BFS는 탐색 알고리즘 중에서도 자주 언급되는 것들인데, 탐색 방향에 있어 각각 Depth/Breadth(깊이/너비) 기준으로 First Search(우선 탐색)하는 알고리즘입니다. 다음 그래프를 `1` 노드부터 DFS, BFS 해보면서 정리해보려고 합니다. 같은 레벨의 노드 중에서는 숫자가 작은 노드부터 순회합니다.
 
 ![Graph](./../assets/graph-search.png)
 
@@ -277,13 +299,13 @@ DFS/BFS는 탐색 알고리즘 중에서도 자주 언급되는 것들인데, �
 
 ### 7-1. DFS
 
-위의 그래프를 DFS하면 데이터를 이렇게 추출할 수 있습니다. 일단 하나의 자식 노드를 탐색하기 시작하면, 해당 자식이 갖고있는 하위 Tree를 모두 탐색한 후에 그 다음 형제 노드의 탐색을 시작합니다.
+DFS, 깊이우선탐색. 위의 그래프를 DFS하면 데이터를 이렇게 추출할 수 있습니다. 일단 하나의 자식 노드를 탐색하기 시작하면, 해당 자식이 갖고있는 하위 Tree를 모두 탐색한 후에 그 자식의 형제 노드를 탐색하기 시작합니다.
 
 ```
 1 → 2 → 7 → 6 → 8 → 3 → 4 → 5
 ```
 
-DFS를 코드로 구현할 때는 Stack을 사용하는데요, 루트에서 순회를 시작하여 마주치는 노드들을 Stack에 쌓아두고, 그 중 한 노드에 인접한 노드들을 다시 순회하며 Stack에 쌓고, 결국 가장 하위의 노드까지 순회한 후 Stack을 비우며 형제 노드들을 역으로 탐색하겠다는 아이디어입니다. Stack은 함수 호출 스택을 사용하는 Recursion으로 대체할 수 있습니다. (Stack ↔︎ Recursion)
+DFS를 코드로 구현할 때는 Stack을 사용하는데요, 루트에서 인접한 노드들을 Stack에 쌓아두고, 그 중 한 노드의 인접한 노드들을 다시 순회하며 Stack에 쌓고, 결국 가장 하위의 노드까지 순회한 후 Stack을 비우며 형제 노드들을 역으로 탐색하겠다는 아이디어입니다. Stack은 함수 호출 스택을 사용하는 Recursion으로 대체할 수 있습니다. (Stack ↔︎ Recursion)
 
 <br />
 
@@ -292,17 +314,21 @@ DFS를 코드로 구현할 때는 Stack을 사용하는데요, 루트에서 순�
 ```typescript
 function dfs(graph: number[][], startNode: number) {
     const stack: number[] = []
-    const visited: Set = new Set()
+    const visited: Set<number> = new Set()
 
     visited.add(startNode)
     stack.push(startNode)
 
     while (stack.length > 0) {
-        const node = stack.pop() // 역순으로 다시 올라가자
-        for (let adj of graph[node]) {
+        // 가장 마지막에 쌓인 노드부터 추출하고
+        const node = stack.pop()!
+
+        // 방금 꺼낸 노드의 모든 인접 노드를 검사하자
+        const adjs = graph[node]
+        for (let adj of adjs) {
             if (!visited.has(adj)) {
-                stack.push(adj) // 자식들을 스택에 넣어주자 (큰 수 부터 넣어서, 작은 수부터 꺼내서 깊이 탐색을 해야함)
-                visited.add(adj) // 방문 처리
+                stack.push(adj) // 인접 노드들을 Stack 위에 쌓자
+                visited.add(adj) // 중복 검사를 피하기 위한 방문 처리
             }
         }
     }
@@ -311,24 +337,66 @@ function dfs(graph: number[][], startNode: number) {
 dfs(graph, 1)
 ```
 
+<br />
+
 #### Recursion
 
 ```typescript
-function dfsAux(graph: number[][], adj: number, visited: boolean[]) {
-    visited[adj] = true
+function dfs(graph: number[][], node: number, visited: Set<number>) {
+    visited.add(node) // 방문 처리
 
-    for (let adj of graph[adj]) {
-        if (!visited[adj]) dfsAux(graph, adj, visited)
+    // 모든 인접 노드를 검사하자
+    const adjs = graph[node]
+    for (let adj of adjs) {
+        // 인접 노드를 핸들링하는 함수를 호출 스택에 쌓자
+        if (!visited.has(adj)) dfs(graph, adj, visited)
+    }  
+}
+
+dfs(graph, 1, new Set())
+```
+
+<br />
+
+### 7-2. BFS
+
+BFS는 너비우선탐색으로, 위의 동일한 Graph를 BFS하면 다음 순서로 데이터를 추출할 수 있습니다.
+
+```
+1 → 2 → 3 → 8 → 7 → 4 → 5 → 6
+```
+
+DFS가 Stack/호출스택을 사용한다면, BFS는 Queue를 사용합니다. 너비 우선으로 탐색하기 때문에, 루트에서 시작해서 FiFo, 먼저 발견한 순서대로 추출하겠다는 거죠!
+
+<br />
+
+#### Queue
+
+```typescript
+function bfs(graph: number[][], startNode: number) {
+    const queue: number[] = []
+    const visited: Set = new Set()
+
+    visited.add(startNode)
+    queue.push(startNode)
+
+    while (queue.length > 0) {
+        // 가장 먼저 넣었던 노드부터 빼내고
+        const node = queue.shift()
+
+        // 이 노드의 인접 노드들을 Queue의 뒤에 추가해준다
+        const adjs = graph[node]
+        for (let adj of adjs) {
+            if (!visited.has(adj)) {
+                queue.push(adj)
+                visited.add(adj) // 중복 검사를 피하기 위한 방문 처리
+            }
+        }
     }
 }
 
-function dfs(graph: number[][], startNode: number) {
-    let visited: boolean[] = []
-    dfsAux(graph, startNode, visited)
-}
+dfs(graph, 1)
 ```
-
-### 7-2. BFS
 
 <br />
 
