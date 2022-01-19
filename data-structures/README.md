@@ -395,7 +395,7 @@ function bfs(graph: number[][], startNode: number) {
     }
 }
 
-dfs(graph, 1)
+bfs(graph, 1)
 ```
 
 <br />
