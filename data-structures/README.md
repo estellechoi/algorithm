@@ -155,7 +155,7 @@ Tree 자료구는 [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Documen
 
 ### 5-2. DFT(Depth-First Traversal)
 
-DFT는 Tree를 Vertically 순회하는 방법으로 보통 다음의 3가지로 나누어 이야기합니다. 코드에서는 Recursion 사용이 강조됩니다.
+DFT는 Tree를 Depth First, 깊이 우선 순회하는 방법으로 보통 다음의 3가지로 나누어 이야기합니다. DFT는 DFS와 비슷하게 형제 노드보다 자식 노드를 우선으로 순회하기 때문에 코드로 DFT를 구현할 때는 Stack 자료구조가 사용되고, Stack은 Recursion으로 대체할 수 있으니 Recursion을 사용해서 구현하기도 합니다.
 
 #### Pre-order
 
@@ -185,7 +185,9 @@ In-order 방법은 왼쪽 → 부모 → 오른쪽 자식 순으로 데이터를
 
 ### 5-3. BFT(Breadth-First Traversal)
 
-Tree의 깊이보다 너비가 클 때는 BFT가 더 나은 선택일 수 있습니다. 이때 Queue를 사용하고, DFT와 다르게 Recursion 보다는 Loop 사용이 효율적입니다.
+Tree의 깊이보다 너비가 클 때는 BFT가 더 나은 선택일 수 있습니다. DFT와 달리, 자식 노드보다는 형제 노드를 우선적으로 순회합니다. DFT가 Stack을 사용한다면, BFT는 Queue를 사용합니다.
+
+<br />
 
 ### 5-🍎. What's next
 
@@ -415,3 +417,4 @@ bfs(graph, 1)
 - [What is a Linked List? Linked List vs Array - YOON MI KIM](https://medium.com/@yk392/what-is-a-linked-list-linked-list-vs-array-92f0db4015cc)
 - [Simplifying Functional Programming with Recursion (Javascript) - Meghan Hein](https://medium.com/weekly-webtips/simplifying-functional-programming-with-recursion-javascript-aa7007f4b159)
 - [Depth-First Search in TypeScript](https://www.devmaking.com/learn/algorithms/depth-first-search/typescript/)
+- [What is the difference between traversal and search? | Quora](https://www.quora.com/What-is-the-difference-between-traversal-and-search)
