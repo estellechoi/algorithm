@@ -141,6 +141,8 @@ function findGCD(arr: number[], gcd: GCDFunction): number {
 }
 ```
 
+<br />
+
 [`reduce(reducer)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce) 메소드를 사용해서 다음과 같이 할 수도 있겠습니다.
 
 ```typescript
