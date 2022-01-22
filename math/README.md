@@ -111,8 +111,58 @@ gcd(1, 0)
 
 <br />
 
+### 1-4. 여러 수의 최대공약수
+
+여러 수의 최대공약수는 두 수씩 묶어 최대공약수를 구한 후 치환하는 식으로 구할 수 있습니다. 만약 3 개의 수 `a`, `b`, `c`의 최대공약수는 위에서 [Euclidean + Modulo](./#1-3-euclidean--modulo) 조합으로 만든 `gcd(a, b)` 함수를 사용하여 다음과 같이 구할 수 있습니다.
+
+```typescript
+const result = gcd(a, gcd(b, c)) 
+            // = gcd(gcd(a, b), c) 
+            // = gcd(gcd(a, c), b)
+```
+
+<br />
+
+여러 수를 배열로 받는다면 다음과 같이 해볼 수 있고요,
+
+```typescript
+type GCDFunction = (a: number, b: number) => number
+
+function findGCD(arr: number[], gcd: GCDFunction): number {
+    let result: number = arr[0]
+
+    arr.some((item, index) => {
+        if (index === 0) return false
+        result = gcd(item, result)
+        return result === 1        
+    })
+
+    return result
+}
+```
+
+[`reduce(reducer)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce) 메소드를 사용해서 다음과 같이 할 수도 있겠습니다.
+
+```typescript
+type GCDFunction = (a: number, b: number) => number
+
+function findGCD(arr: number[], gcd: GCDFunction): number {
+    return arr.reduce(gcd)
+}
+```
+
+<br />
+
+## 2. 최소공배수(LCM)
+
+### 2-1. Brute Force
+
+<br />
+
 ---
 
 ### References
 
 - [Program to find GCD or HCF of two numbers | GeeksForGeeks](https://www.geeksforgeeks.org/c-program-find-gcd-hcf-two-numbers/)
+- [GCD of more than two (or array) numbers | GeeksForGeeks](https://www.geeksforgeeks.org/gcd-two-array-numbers/)
+- [Program to find LCM of two numbers | GeeksForGeeks](https://www.geeksforgeeks.org/program-to-find-lcm-of-two-numbers/?ref=lbp)
