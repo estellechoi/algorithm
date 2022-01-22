@@ -1,4 +1,4 @@
-# Data Structures
+# Data Structures & Search
 
 1. Stack & Queue
 2. Recursion
