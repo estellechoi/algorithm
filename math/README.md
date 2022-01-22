@@ -159,6 +159,58 @@ function findGCD(arr: number[], gcd: GCDFunction): number {
 
 ### 2-1. Brute Force
 
+가장 단순한 방법으로, 두 수를 전부 [소인수 분해](https://ko.wikipedia.org/wiki/%EC%86%8C%EC%9D%B8%EC%88%98%EB%B6%84%ED%95%B4)한 후, 겹치는 소인수들만을 곱한 값이 최소공배수가 됩니다.
+
+```typescript
+function lcm(a: number, b: number): number {
+    if (a === 0 || b === 0) return 0
+    if (a === 1) return b
+    if (b === 1) return a
+    if (a === b) return a
+    ...
+} 
+```
+
+<br />
+
+### 2-2. 최대공약수 재활용하기
+
+조금 더 우아한 방법으로는 최대공약수 함수 `gcd(a, b)`를 사용하는 것입니다. 다음의 수학적 사실에 근거해서요: _두 수의 곱은 두 수의 최소공배수와 최대공약수를 곱한 것과 같다_
+
+`a * b = lcm(a, b) * gcd(a, b)` → `lcm(a, b) = a * b / gcd(a, b)`
+
+이제 최소공배수 함수는 아래와 같이 심플해집니다.
+
+```typescript
+function lcm(a: number, b: number): number {
+    return a * b / gcd(a, b)
+}
+```
+
+<br />
+
+### 2-3. 여러 수의 최소공배수
+
+2개 이상의 수들을 대상으로 할 때는 최대공약수와 마찬가지로, 두 수씩 묶어 최소공배수를 구한 후 치환하는 식으로 구할 수 있습니다.
+
+```typescript
+const result = lcm(a, lcm(b, c)) 
+            // = lcm(lcm(a, b), c) 
+            // = lcm(lcm(a, c), b)
+```
+
+<br />
+
+따라서 대상 수들을 배열로 받는다면, 다음과 같이 `reduce(reducer)` 메소드를 사용할 수 있습니다.
+
+```typescript
+type LCMFunction = (a: number, b: number) => number
+
+function findLCM(arr: number[], lcm: LCMFunction): number {
+    return arr.reduce(lcm)
+}
+```
+
 <br />
 
 ---
