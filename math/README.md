@@ -124,7 +124,7 @@ gcd(1, 0) // 1
 
 <br />
 
-#### 시간복잡도
+#### 복잡도
 
 최악의 경우 시간복잡도는 `O(log(max(a,b)))`입니다. 나머지 연산을 역으로 생각해보면 최악의 경우 호출 스택은 이렇게 될건데, `a`, `b` 값을 추적해보면 [피보나치 수열](https://en.wikipedia.org/wiki/Fibonacci_number)이 되는 것을 확인할 수 있습니다. 그렇다면, 최악의 경우, `max(a, b)` 값이 증가할 수록 피보나치 수열에 따라 더 많은 단계를 건너뛸 수 있으니 호출 스택에 쌓이게 될 함수들이 증가하는 속도는 `max(a, b)`의 속도에 반비례하게 됩니다.
 
@@ -187,6 +187,12 @@ function findGCD(arr: number[], gcd: GCDFunction): number {
 
 <br />
 
+#### 복잡도
+
+시간복잡도는 `O(N * log(N))`, Auxiliary Space는 `O(1)` 입니다.
+
+<br />
+
 ## 2. 최소공배수(LCM): 최대공약수 재활용하기
 
 ### 2-1. Brute Force
@@ -218,6 +224,12 @@ function lcm(a: number, b: number): number {
     return a * b / gcd(a, b)
 }
 ```
+
+<br />
+
+#### 복잡도
+
+시간복잡도는 최대공약수와 마찬가지로 `O(log(max(a,b)))` 입니다.
 
 <br />
 
@@ -297,6 +309,12 @@ Backtracking의 핵심은 이렇습니다.
 Backtracking은 다음과 같이 Recursion을 통해 확장되는 Recursion Tree로 더 잘 이해할 수 있습니다.
 
 ![Recursion Tree](./../assets/recursion-tree.gif)
+
+<br />
+
+#### 복잡도
+
+시간복잡도는 자연스레 `O(n * n!)`이 되는데요, 유효한 순열의 경우의 수인 `n!`에 대해 각각 `O(n)`의 시간복잡도가 발생하기 때문입니다.
 
 <br />
 
