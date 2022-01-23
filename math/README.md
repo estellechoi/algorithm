@@ -215,7 +215,9 @@ function findLCM(arr: number[], lcm: LCMFunction): number {
 
 ## 3. 순열(Permutation)
 
-[순열](https://ko.wikipedia.org/wiki/%EC%88%9C%EC%97%B4)은 흔히 경우의 수를 구할 때 사용하는 방법으로, 순서대로 정렬하는 것을 말합니다. 예를 들어 `BTC`, `ETH`, `ATOM` 3 개의 단어로 만들 수 있는 구문의 경우의 수는 `3! = 3 * 2 * 1`, 6가지입니다.
+### 3-1. 정의
+
+[순열](https://ko.wikipedia.org/wiki/%EC%88%9C%EC%97%B4)은 흔히 경우의 수를 구할 때 사용하는 방법으로, 순서가 부여된 임의의 집합을 다른 순서로 뒤섞는 것을 말합니다. 예를 들어 `BTC`, `ETH`, `ATOM` 3 개의 단어로 만들 수 있는 구문의 경우의 수는 `3! = 3 * 2 * 1`, 6가지로, 결과는 다음과 같습니다.
 
 BTC ETH ATOM
 
@@ -231,7 +233,65 @@ ETH ATOM BTC
 
 <br />
  
-수학에서는 `𝗇P𝗋`로 표시하는데, `n` 개 중 `r` 개를 뽑는 경우의 수를 말합니다. 계산법은 `𝗇P𝗋 = n * (n - 1) * ⋯ * (n - r + 1)`로, [Factorial](https://en.wikipedia.org/wiki/Factorial)을 사용하면 `𝗇P𝗋 = n! / (n - r)!`로 대체할 수 있습니다. 위 예시의 경우 `𝟥P𝟥`으로 표시하고, 계산법은 `3!` 이 되겠죠.
+수학에서는 `𝗇P𝗋`로 표시하는데, `n` 개 중 `r` 개를 뽑아 순서대로 정렬할 수 있는 경우의 수를 말합니다. 계산법은 `𝗇P𝗋 = n * (n - 1) * ⋯ * (n - r + 1)`로, [Factorial](https://en.wikipedia.org/wiki/Factorial)을 사용하면 `𝗇P𝗋 = n! / (n - r)!`로 대체할 수 있습니다. 위 예시의 경우 `𝟥P𝟥`으로 표시하고, 계산법은 `3!` 이 되겠죠.
+
+<br />
+
+### 3-2. Backtracking
+
+주어진 순서가 부여된 임의의 집합, 보통 배열로 주어지는데요, 이 주어진 배열에 대한 순열 조합은 [Backtracking](https://www.geeksforgeeks.org/backtracking-algorithms/) 방식으로 구할 수 있습니다. Backtracking의 핵심은 다음과 같습니다.
+
+- Recursion을 통해 모든 가능한 경우를 탐색한다
+- Recursive 호출시마다 값을 하나씩 시도한다
+- 조건에 맞지 않는 값이 발견되면 Recursion을 즉시 멈춘다
+
+<br />
+
+따라서 모든 가능한 순열 조합을 찾아야하는 문제의 특성상 Backtracking이 적절한 방법일 수 있는거죠! Backtracking 조건도 심플하고요: _중복될 수 없다_
+
+- 하나의 순열을 이루는 요소끼리 중복될 수 없다
+- 순열끼리 중복될 수 없다
+
+가령 `1`, `2`, `3` 3 개의 숫자로 순열을 만들 때 `1 1 2`와 같이 하나의 순열을 이루는 요소끼리 중복되어서는 안되고, 순열 자체도 서로 중복이 있어서는 안되겠죠. 
+
+<br />
+
+### 3-3. `𝗇P𝗇`
+
+이제 진짜 구현을 해보겠습니다. 주어진 배열을 Iterate 하되, 각 요소에 대해서는 Backtracking 합니다. 조건에 맞지 않는(중복된) 순열이 도출되려고하면 즉시 Recursion을 멈추고요.
+
+![Recursion Tree for Permutations](./../assets/recursion-tree2.png)
+
+사진출처: [How to Solve Permutations in JavaScript - Jordan Moore](https://javascript.plainenglish.io/how-to-solve-permutations-in-javascript-502cc4522482)
+
+<br />
+
+`𝗇P𝗇` 조합을 구현한 함수는 이렇습니다.
+
+```typescript
+function permute<T>(arr: T[]): T[][] {
+    const ps: T[][] = [] // permutations
+
+    function backtrack(arr: T[], p: T[]) {
+        if (p.length === arr.length) {
+            return ps.push(p.slice()) // 얕은 복사
+        }
+
+        arr.forEach(item => {
+            if (!p.includes(item)) {
+                p.push(item) // item을 고정시키고
+                backtrack(arr, p) // 모든 가능한 순열을 시도해보자 (Backtrack)
+                p.pop() // 그 다음 item에 대해 Backtrack 하기위해 Backtrack이 끝난 item은 뺀다 
+            }
+        })
+    }
+
+    backtrack(arr, [])
+    return ps
+}
+```
+
+<br />
 
 <br />
 
@@ -242,3 +302,5 @@ ETH ATOM BTC
 - [Program to find GCD or HCF of two numbers | GeeksForGeeks](https://www.geeksforgeeks.org/c-program-find-gcd-hcf-two-numbers/)
 - [GCD of more than two (or array) numbers | GeeksForGeeks](https://www.geeksforgeeks.org/gcd-two-array-numbers/)
 - [Program to find LCM of two numbers | GeeksForGeeks](https://www.geeksforgeeks.org/program-to-find-lcm-of-two-numbers/?ref=lbp)
+- [Write a program to print all permutations of a given string | GeeksForGeeks](https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/)
+- [How to Solve Permutations in JavaScript - Jordan Moore](https://javascript.plainenglish.io/how-to-solve-permutations-in-javascript-502cc4522482)
