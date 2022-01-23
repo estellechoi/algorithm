@@ -213,6 +213,28 @@ function findLCM(arr: number[], lcm: LCMFunction): number {
 
 <br />
 
+## 3. 순열(Permutation)
+
+[순열](https://ko.wikipedia.org/wiki/%EC%88%9C%EC%97%B4)은 흔히 경우의 수를 구할 때 사용하는 방법으로, 순서대로 정렬하는 것을 말합니다. 예를 들어 `BTC`, `ETH`, `ATOM` 3 개의 단어로 만들 수 있는 구문의 경우의 수는 `3! = 3 * 2 * 1`, 6가지입니다.
+
+BTC ETH ATOM
+
+BTC ATOM ETH
+
+ATOM BTC ETH
+
+ATOM ETH BTC
+
+ETH BTC ATOM
+
+ETH ATOM BTC
+
+<br />
+ 
+수학에서는 `𝗇P𝗋`로 표시하는데, `n` 개 중 `r` 개를 뽑는 경우의 수를 말합니다. 계산법은 `𝗇P𝗋 = n * (n - 1) * ⋯ * (n - (r - 1))`로, [팩토리얼]()을 사용하면 `𝗇P𝗋 = n! / (n - (r - 2))!`로 대체할 수 있습니다. 위 예시의 경우 `𝟥P𝟥`으로 표시하고, 계산법은 `3!` 이 되겠죠.
+
+<br />
+
 ---
 
 ### References
