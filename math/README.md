@@ -52,18 +52,50 @@ function gcd(a: number, b: number): number {
 
 <br />
 
-따라서 두 수 `a`, `b`의 최대공약수를 구하려면, 유클리드 알고리즘을 사용하여 다음과 같이 사고할 수 있겠죠. 반복횟수는 정해져있지 않지만 Exit 조건이 명확하므로 Recursion을 사용할 수 있습니다.
+따라서 두 수 `a`, `b`의 최대공약수를 구하려면, 유클리드 알고리즘을 사용하여 다음과 같이 사고할 수 있겠죠. 반복횟수는 정해져있지 않지만 Exit 조건이 명확하므로 `while` 반복문을 사용할 수도 있고, Recursion을 사용할 수도 있습니다.
 
 - 큰 수에서 작은 수 빼기를 반복한다
 - 더 이상 뺄 수 없게 되면 Exit (한 수가 `0`이 되면)
 - 두 수가 같아지면 Exit
 - 남아있는 수가 최대공약수이다
 
+<br />
+
+#### Loop
+
 ```typescript
 function gcd(a: number, b: number): number {
     if (a === 0) return b
     if (b === 0) return a
     if (a === b) return a
+    if (a === 1 || b === 1) return 1
+
+    let big: number = a > b ? a : b
+    let small: number = a > b ? b : a
+
+    while (big !== small) {
+        const rest = big - small
+        if (rest < small) {
+            big = small
+            small = rest
+        }  else {
+            big = rest
+        }
+    }
+    return small
+}
+```
+
+<br />
+
+#### Recursion
+
+```typescript
+function gcd(a: number, b: number): number {
+    if (a === 0) return b
+    if (b === 0) return a
+    if (a === b) return a
+    if (a === 1 || b === 1) return 1
     return a > b ? gcd(a - b, b) : gcd(a, b - a)
 }
 ```
@@ -72,7 +104,7 @@ function gcd(a: number, b: number): number {
 
 ### 1-3. Euclidean & Modulo
 
-최고의 방법은 유클리드 알고리즘에서 [Modulo(나머지 연산)](https://ko.wikipedia.org/wiki/%EB%82%98%EB%A8%B8%EC%A7%80)을 사용하는 것입니다. 뺄 수 있을 때까지 반복해서 빼는 작업을 Modulo로 대체해서 반복 횟수를 줄일 수 있기 때문입니다. [Euclidean algorithms (Basic and Extended) | GeeksForGeeks](https://www.geeksforgeeks.org/euclidean-algorithms-basic-and-extended/) 문서를 참고했습니다.
+최고의 방법은 유클리드 알고리즘에서 [Modulo(나머지 연산)](https://ko.wikipedia.org/wiki/%EB%82%98%EB%A8%B8%EC%A7%80)을 사용하는 것입니다. 뺄 수 있을 때까지 반복해서 빼는 작업을 Modulo로 대체해서 반복 횟수를 줄일 수 있기 때문입니다. [Euclidean algorithms (Basic and Extended) | GeeksForGeeks](https://www.geeksforgeeks.org/euclidean-algorithms-basic-and-extended/) 문서를 참고했습니다. 다음은 Recursion을 사용한 코드이고, 호출 스택에 쌓이는 것이 부담스러운 경우라면 `while` 반복문을 사용할 수도 있겠습니다.
 
 ```typescript
 function gcd(a: number, b: number): number {
