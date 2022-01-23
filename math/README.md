@@ -217,48 +217,60 @@ function findLCM(arr: number[], lcm: LCMFunction): number {
 
 ### 3-1. 정의
 
-[순열](https://ko.wikipedia.org/wiki/%EC%88%9C%EC%97%B4)은 흔히 경우의 수를 구할 때 사용하는 방법으로, 순서가 부여된 임의의 집합을 다른 순서로 뒤섞는 것을 말합니다. 예를 들어 `BTC`, `ETH`, `ATOM` 3 개의 단어로 만들 수 있는 구문의 경우의 수는 `3! = 3 * 2 * 1`, 6가지로, 결과는 다음과 같습니다.
+[순열](https://ko.wikipedia.org/wiki/%EC%88%9C%EC%97%B4)은 흔히 경우의 수를 구하는 문제에서 언급되는데, 순서가 부여된 임의의 집합을 다른 순서로 뒤섞는 것을 말합니다. 예를 들어 `A`, `B`, `C` 3 개의 단어로 만들 수 있는 순열의 수(경우의 수)는 6가지입니다: `3! = 3 * 2 * 1`
 
-BTC ETH ATOM
+6가지 순열은 다음과 같고요.
 
-BTC ATOM ETH
+A B C
 
-ATOM BTC ETH
+A C B
 
-ATOM ETH BTC
+C A B
 
-ETH BTC ATOM
+C B A
 
-ETH ATOM BTC
+B A C
+
+B C A
 
 <br />
  
-수학에서는 `𝗇P𝗋`로 표시하는데, `n` 개 중 `r` 개를 뽑아 순서대로 정렬할 수 있는 경우의 수를 말합니다. 계산법은 `𝗇P𝗋 = n * (n - 1) * ⋯ * (n - r + 1)`로, [Factorial](https://en.wikipedia.org/wiki/Factorial)을 사용하면 `𝗇P𝗋 = n! / (n - r)!`로 대체할 수 있습니다. 위 예시의 경우 `𝟥P𝟥`으로 표시하고, 계산법은 `3!` 이 되겠죠.
+수학에서는 `𝗇P𝗋`로 표시하는데, `n` 개 중 `r` 개를 뽑아 순서대로 정렬할 수 있는 경우의 수, 즉 순열의 수를 의미합니다. 계산법은 `𝗇P𝗋 = n * (n - 1) * ⋯ * (n - r + 1)`로, [Factorial](https://en.wikipedia.org/wiki/Factorial)을 사용하면 `𝗇P𝗋 = n! / (n - r)!`로 대체할 수 있습니다. 위 예시의 경우 `𝟥P𝟥`으로 표시하고, 순열의 수는 `3!` 이 됩니다.
 
 <br />
 
 ### 3-2. Backtracking
 
-주어진 순서가 부여된 임의의 집합, 보통 배열로 주어지는데요, 이 주어진 배열에 대한 순열 조합은 [Backtracking](https://www.geeksforgeeks.org/backtracking-algorithms/) 방식으로 구할 수 있습니다. Backtracking의 핵심은 다음과 같습니다.
+주어진 배열에 대한 순열 조합은 [Backtracking](https://www.geeksforgeeks.org/backtracking-algorithms/) 방식으로 구할 수 있습니다. B
 
-- Recursion을 통해 모든 가능한 경우를 탐색한다
-- Recursive 호출시마다 값을 하나씩 시도한다
-- 조건에 맞지 않는 값이 발견되면 Recursion을 즉시 멈춘다
+> Backtracking is an algorithmic-technique for solving problems recursively by trying to build a solution incrementally, one piece at a time, removing those solutions that fail to satisfy the constraints of the problem at any point of time... - [Backtracking Algorithms](https://www.geeksforgeeks.org/backtracking-algorithms/)
 
 <br />
 
-따라서 모든 가능한 순열 조합을 찾아야하는 문제의 특성상 Backtracking이 적절한 방법일 수 있는거죠! Backtracking 조건도 심플하고요: _중복될 수 없다_
+Backtracking의 핵심은 이렇습니다.
+
+- Recursion을 통해 모든 가능한 경우를 시도한다
+- Recursive 호출시마다 값을 하나씩 추가한다
+- 답이 될 수 없는 조건이 발견되면 Recursion을 멈춘다
+
+<br />
+
+따라서 모든 가능한 순열을 찾아야하는 문제의 특성상 Backtracking이 적절한 방법일 수 있는거죠! 답이 될 수 없는 조건도 심플하고요: _중복될 수 없다_. 가령 `A`, `B`, `C` 3 개의 글자로 순열을 만들 때 `A A B`와 같이 하나의 순열을 이루는 요소끼리 중복되어서는 안되고, 순열 자체도 서로 중복이 있어서는 안되겠죠.
 
 - 하나의 순열을 이루는 요소끼리 중복될 수 없다
 - 순열끼리 중복될 수 없다
 
-가령 `1`, `2`, `3` 3 개의 숫자로 순열을 만들 때 `1 1 2`와 같이 하나의 순열을 이루는 요소끼리 중복되어서는 안되고, 순열 자체도 서로 중복이 있어서는 안되겠죠. 
+<br />
+
+Backtracking은 다음과 같이 Recursion을 통해 확장되는 Recursion Tree로 더 잘 이해할 수 있습니다.
+
+![Recursion Tree](./../assets/recursion-tree.png)
 
 <br />
 
 ### 3-3. `𝗇P𝗇`
 
-이제 진짜 구현을 해보겠습니다. 주어진 배열을 Iterate 하되, 각 요소에 대해서는 Backtracking 합니다. 조건에 맞지 않는(중복된) 순열이 도출되려고하면 즉시 Recursion을 멈추고요.
+이제 진짜 구현을 해보겠습니다. Incremental Recursion을 통해 순열 배열을 하나씩 만들어보면 됩니다. 만약 `[1, 2, 3]`이라는 배열이 주어졌다면, `[1]` → `[1, 2]` → `[1, 2, 3]` 이런식으로 Recursion을 통해 값을 하나씩 추가해볼 수 있습니다. 모든 가능한 경우를 찾기 위해 각각의 Recursive 단계에서는 배열의 모든 원소를 추가하여 검사해보고요. 이 과정에서 예를 들어, `[1, 1]`이 만들어지면 "답이 될 수 없는 조건"이므로 Recursion을 멈추게 합니다.
 
 ![Recursion Tree for Permutations](./../assets/recursion-tree2.png)
 
@@ -266,7 +278,7 @@ ETH ATOM BTC
 
 <br />
 
-`𝗇P𝗇` 조합을 구현한 함수는 이렇습니다.
+`𝗇P𝗇`, 주어진 배열의 모든 원소를 대상으로 하는 순열 조합을 구하는 함수는 이렇습니다.
 
 ```typescript
 function permute<T>(arr: T[]): T[][] {
