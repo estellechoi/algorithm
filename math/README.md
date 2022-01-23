@@ -1,14 +1,14 @@
 # Mathematics
 
-1. 최대공약수(GCD/HCF)
-2. 최소공배수(LCM)
-3. 순열(Permutation)
+1. 최대공약수(GCD/HCF): Euclidean & Modulo
+2. 최소공배수(LCM): 최대공약수 재활용하기
+3. 순열(Permutation): Backtracking, `𝗇P𝗇`, `𝗇P𝗋`
 4. 조합(Combination)
 5. 멱집합(Power Set)
 
 <br />
 
-## 1. 최대공약수(GCD/HCF)
+## 1. 최대공약수(GCD/HCF): Euclidean & Modulo
 
 ### 1-1. Brute Force
 
@@ -155,7 +155,7 @@ function findGCD(arr: number[], gcd: GCDFunction): number {
 
 <br />
 
-## 2. 최소공배수(LCM)
+## 2. 최소공배수(LCM): 최대공약수 재활용하기
 
 ### 2-1. Brute Force
 
@@ -213,7 +213,7 @@ function findLCM(arr: number[], lcm: LCMFunction): number {
 
 <br />
 
-## 3. 순열(Permutation)
+## 3. 순열(Permutation): Backtracking, `𝗇P𝗇`, `𝗇P𝗋`
 
 ### 3-1. 정의
 
@@ -241,7 +241,7 @@ B C A
 
 ### 3-2. Backtracking
 
-주어진 배열에 대한 순열 조합은 [Backtracking](https://www.geeksforgeeks.org/backtracking-algorithms/) 방식으로 구할 수 있습니다. B
+주어진 배열에 대한 순열 조합은 [Backtracking](https://www.geeksforgeeks.org/backtracking-algorithms/) 방식으로 구할 수 있습니다.
 
 > Backtracking is an algorithmic-technique for solving problems recursively by trying to build a solution incrementally, one piece at a time, removing those solutions that fail to satisfy the constraints of the problem at any point of time... - [Backtracking Algorithms](https://www.geeksforgeeks.org/backtracking-algorithms/)
 
@@ -264,7 +264,7 @@ Backtracking의 핵심은 이렇습니다.
 
 Backtracking은 다음과 같이 Recursion을 통해 확장되는 Recursion Tree로 더 잘 이해할 수 있습니다.
 
-![Recursion Tree](./../assets/recursion-tree.png)
+![Recursion Tree](./../assets/recursion-tree.gif)
 
 <br />
 
@@ -286,7 +286,8 @@ function permute<T>(arr: T[]): T[][] {
 
     function backtrack(arr: T[], p: T[]) {
         if (p.length === arr.length) {
-            return ps.push(p.slice()) // 얕은 복사
+            ps.push([...p]) // 복사
+            return
         }
 
         arr.forEach(item => {
@@ -304,6 +305,34 @@ function permute<T>(arr: T[]): T[][] {
 ```
 
 <br />
+
+### 3-4. `𝗇P𝗋`
+
+`𝗇P𝗋`, 주어진 배열에서 `r`개의 원소를 대상으로 순열 조합을 구하는 것도 비슷합니다. `n`개에서 `r`개로, Backtrack의 Exit 조건만 바뀝니다.
+
+```typescript
+function permuteR<T>(arr: T[], r: number): T[][] {
+    const ps: T[][] = [] // permutations
+
+    function backtrack(arr: T[], p: T[]) {
+        if (p.length === r) {
+            ps.push([...p]) // 복사
+            return
+        }
+
+        arr.forEach(item => {
+            if (!p.includes(item)) {
+                p.push(item) // item을 고정시키고
+                backtrack(arr, p) // 모든 가능한 순열을 시도해보자 (Backtrack)
+                p.pop() // 그 다음 item에 대해 Backtrack 하기위해 Backtrack이 끝난 item은 뺀다 
+            }
+        })
+    }
+
+    backtrack(arr, [])
+    return ps
+}
+```
 
 <br />
 
