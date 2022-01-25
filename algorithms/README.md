@@ -14,6 +14,7 @@ Complexity, 복잡도라는 것은 알고리즘이 얼마나 효율적인가를 
 > - Independent of the machine and its configuration, on which the algorithm is running on.
 > - Shows a direct correlation with the number of inputs.
 > - Can distinguish two algorithms clearly without ambiguity.
+>
 >[Time Complexity and Space Complexity | GeeksForGeeks](https://www.geeksforgeeks.org/time-complexity-and-space-complexity/)
 
 <br />
