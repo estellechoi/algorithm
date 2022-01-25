@@ -11,10 +11,10 @@
 Complexity, 복잡도라는 것은 알고리즘이 얼마나 효율적인가를 표현하는 방식입니다. 알고리즘을 평가할 때는 1) 알고리즘의 런타임과 환경설정에 무관하고, 2) 입력의 갯수와 상관관계가 있고, 3) 두 알고리즘을 아주 명확하게 구분할 수 있어야하는데, 시간복잡도와 공간복잡도가 이 조건들을 만족하기 때문에 알고리즘을 평가하는데 널리 사용되고 있습니다.
 
 > Generally, there is always more than one way to solve a problem in computer science with different algorithms. Therefore, it is highly required to use a method to compare the solutions in order to judge which one is more optimal. The method must be:
-> Independent of the machine and its configuration, on which the algorithm is running on.
-> Shows a direct correlation with the number of inputs.
-> Can distinguish two algorithms clearly without ambiguity.
->- [Time Complexity and Space Complexity | GeeksForGeeks](https://www.geeksforgeeks.org/time-complexity-and-space-complexity/)
+> - Independent of the machine and its configuration, on which the algorithm is running on.
+> - Shows a direct correlation with the number of inputs.
+> - Can distinguish two algorithms clearly without ambiguity.
+>[Time Complexity and Space Complexity | GeeksForGeeks](https://www.geeksforgeeks.org/time-complexity-and-space-complexity/)
 
 <br />
 
