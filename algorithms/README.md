@@ -8,18 +8,16 @@
 
 ### 1-1. Complexity
 
-Complexity, 복잡도라는 것은 알고리즘이 얼마나 효율적인가를 표현하는 방식입니다. 알고리즘을 평가할 때는 1) 알고리즘의 런타임과 환경설정에 무관하고, 2) 입력의 갯수와 상관관계가 있고, 3) 두 알고리즘을 아주 명확하게 구분할 수 있어야하는데, 시간복잡도와 공간복잡도가 이 조건들을 만족하기 때문에 알고리즘을 평가하는데 널리 사용되고 있습니다.
+Complexity, 복잡도라는 것은 알고리즘이 얼마나 효율적인가를 표현하는 방식입니다. [Time Complexity and Space Complexity | GeeksForGeeks](https://www.geeksforgeeks.org/time-complexity-and-space-complexity/)에 따르면, 알고리즘을 평가할 때는 1) 알고리즘의 런타임과 환경설정에 무관하고, 2) 입력의 갯수와 상관관계가 있고, 3) 두 알고리즘을 아주 명확하게 구분할 수 있어야하는데, 시간복잡도와 공간복잡도가 이 조건들을 만족하기 때문에 알고리즘을 평가하는데 널리 사용되고 있습니다.
 
 > Generally, there is always more than one way to solve a problem in computer science with different algorithms. Therefore, it is highly required to use a method to compare the solutions in order to judge which one is more optimal. The method must be:
 > - Independent of the machine and its configuration, on which the algorithm is running on.
 > - Shows a direct correlation with the number of inputs.
 > - Can distinguish two algorithms clearly without ambiguity.
->
->[Time Complexity and Space Complexity | GeeksForGeeks](https://www.geeksforgeeks.org/time-complexity-and-space-complexity/)
 
 <br />
 
-보통 알고리즘의 복잡도를 얘기할 때는 최악의 경우를 가[Big O Notation](https://en.wikipedia.org/wiki/Big_O_notation)이 사용됩니다.정합니다. 예를 들어 배열을 돌며 특정 값을 찾을 때는 그 값을 가장 마지막 Loop에서 찾거나, 원하는 값이 존재하지 않는 시나리오를 가정하고 복잡도를 계산하게 됩니다. 이 복잡도는 [Big O Notation](https://en.wikipedia.org/wiki/Big_O_notation)을 사용해서 표기하는데, 입력의 갯수 `N`이 증가할 수록 필요한 시간과 공간은 얼마나 빠르게 늘어날 것인가를 표시하는 방법입니다.
+보통 알고리즘의 복잡도를 얘기할 때는 최악의 경우를 가정합니다. 예를 들어 배열을 돌며 특정 값을 찾을 때는 그 값을 가장 마지막 Loop에서 찾거나, 원하는 값이 존재하지 않아 모든 Loop를 돌아야하는 시나리오를 가정하고 복잡도를 계산하게 됩니다. 이러한 복잡도는 [Big O Notation](https://en.wikipedia.org/wiki/Big_O_notation)을 사용해서 표기하는데, 입력의 갯수 `N`이 증가할 수록 필요한 시간과 공간은 얼마나 빠르게 늘어날 것인가를 표시하는 방법입니다.
 
 > In computer science, big O notation is used to classify algorithms according to how their run time or space requirements grow as the input size grows. - Wikipedia
 
