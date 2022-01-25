@@ -2,9 +2,11 @@
 
 This repo is for studying data structures and algorithms.
 
-- [Data Structures](./data-structures/README.md)
-- [Algorithms](./algorithms/README.md)
+- [Data Structures & Search](./data-structures/README.md)
+- [Algorithms & Complexity](./algorithms/README.md)
 - [Mathematics](./math/README.md)
+
+<br />
 
 ---
 
