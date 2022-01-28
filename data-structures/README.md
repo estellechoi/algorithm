@@ -113,6 +113,76 @@ JavaScript에서 호출되는 모든 함수는 하나의 호출 스택에 쌓입
 
 ## 3. Array & String
 
+### 3-1. Dynamic Array
+
+Array에 관해서라면, 그냥 Array와 Dynamic Array를 구분할 수 있어야합니다. JavaScript에서 Array 객체로 구현된 Array는 기본적으로 Dynamic Array 입니다. Array를 초기화하는 방법에 따라 최초 길이가 다를 수는 있지만, 언제든 `push()`, `pop()`과 같은 Array 메소드들을 사용하여 길이를 변경할 수 있습니다. 참고로 `Array` 생성자를 사용하면 지정된 길이를 가진 빈 Array가 할당되고, `[]`와 같이 리터럴 방식으로 초기화하면 실제 원소들로 채워진 만큼의 길이를 가진 Array가 할당됩니다.
+
+```typescript
+// array
+const arr: string[] = new Array<string>(5) // array with 5 empty slots created
+
+// dynamic array
+const dynamicArr: string[] = []
+```
+
+<br />
+
+실제로 위와 같이 선언한 것들을 콘솔에 찍어보면 다음과 같이 차이점을 확인할 수 있습니다.
+
+```typescript
+// array
+console.log(arr.length) // 5
+console.log(arr) // [empty × 5]
+
+// dynamic array
+console.log(dynamicArr.length) // 0
+console.log(dynamicArr) // []
+```
+
+<br />
+
+이번에는 각각 `push()` 메소드를 사용하여 원소를 추가해보겠습니다. 생성자를 사용해서 만든 `arr`의 경우, 이미 할당된 5 개의 빈 공간들을 침범하지 않고 추가 공간을 만들어 6 번째 원소로서 추가합니다.
+
+```typescript
+// array
+arr.push('Yujin') // [empty × 5, 'Yujin']
+console.log(arr.length) // 6
+
+// dynamic array
+dynamicArr.push('Yujin') // ['Yujin']
+console.log(dynamicArr.length) // 1
+```
+
+<br />
+
+### 3-2. Fixed Array
+
+위에서 정리해본 것처럼 JavaScript에서 `Array` 객체만으로는 길이가 고정된 배열을 만들 수 없습니다. 원하는 길이의 빈 공간이 할당된 배열을 만들 수는 있지만 `push()` 메소드를 사용하여 언제든 길이를 늘릴 수 있기 때문입니다. JavaScript로 길이가 고정된 배열을 구현하려면 [`Object.seal()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/seal) 메소드를 사용하면 됩니다.
+
+```typescript
+Object.seal(arr)
+
+arr.push('Bomin') // Uncaught TypeError: Cannot add property 6, object is not extensible
+arr.pop() // Uncaught TypeError: Cannot delete property '5' of [object Array]
+```
+
+<br />
+
+### 3-3. String
+
+String(문자열)은 글자들로 이루어진 Array입니다. 그래서 거의 모든 언어에서 Array 객체에서 제공하는 메소드를 String 객체에서도 거의 동일하게 제공합니다. String에 대해 신경쓸 부분은, 사용하는 언어에서 String이 Mutable한지 Immutable한지를 구분해야 한다는 것입니다. 예를 들어 JavaScript에서 String은 Immutable 한데, 이게 무슨 말이나면요. 다음과 같이 Index를 사용해서 String의 한 글자를 Read 할 수는 있지만, Write 할 수 없다는 뜻입니다. TypeScript를 사용하신다면 진작에 `Index signature in type 'String' only permits reading.ts(2542)`라는 에러 메시지를 보실 수 있습니다!
+
+```typescript
+let str = 'hello world'
+str[5] = ','
+console.log(str) // 'hello world'
+
+str = 'hello,world'
+console.log(str) // 'hello,world'
+```
+
+<br />
+
 ### 3-🍎. What's next
 
 - [Leetcode array overview](https://leetcode.com/explore/featured/card/fun-with-arrays/)
