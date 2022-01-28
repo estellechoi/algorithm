@@ -47,6 +47,8 @@
 
 <img src="./../assets/o-complexity.png" width="700"/>
 
+사진 출처: [Understanding Big O Notation via JavaScript](https://www.digitalocean.com/community/tutorials/js-big-o-notation)
+
 <br />
 
 ## 2. Time Complexity
