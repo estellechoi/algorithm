@@ -229,6 +229,17 @@ class LNode<T> {
     }
 }
 
+interface ILinkedList<T> {
+    head: LNode<T> | null
+    size: number
+    addNew(node: LNode<T>): void
+    insertAt(node: LNode<T>, index: number): boolean
+    removeFrom(index: number): LNode<T> | null
+    removeElement(node: LNode<T>): LNode<T> | null
+    indexOf(node: LNode<T>): number
+    isEmpty(): boolean
+}
+
 class LinkedList<T> {
     head: LNode<T> | null
     size: number
