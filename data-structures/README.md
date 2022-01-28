@@ -216,7 +216,7 @@ Linked List는 마치 Array처럼 동작하지만, 매우 다릅니다. Array는
 
 ### 4-2. Linked List in JavaScript
 
-JavaScript는 Linked List를 네이티브 객체로 제공하지 않기 때문에 [다음과 같이](./linkedList.ts) 직접 구현해서 사용할 수 있겠습니다. `Node` 클래스는 자기 자신과 다음 노드에 대한 정보를 갖고, `LinkedList` 클래스는 가장 첫번 째 노드에 대한 정보와 List의 길이 정보를 갖도록하는 식으로 구현해볼 수 있습니다. [Implementation of LinkedList in Javascript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-linkedlist-javascript/) 문서를 참고했습니다.
+JavaScript는 Linked List를 네이티브 객체로 제공하지 않기 때문에 [다음과 같이](./linkedList.ts) 직접 구현해서 사용할 수 있겠습니다. `LNode` 클래스는 자기 자신과 다음 노드에 대한 정보를 갖고, `LinkedList` 클래스는 가장 첫 번째 노드에 대한 정보와 List의 길이 정보를 갖도록하는 식으로 구현해볼 수 있습니다. [Implementation of LinkedList in Javascript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-linkedlist-javascript/) 문서를 참고했습니다.
 
 ```typescript
 class LNode<T> {
@@ -229,20 +229,25 @@ class LNode<T> {
     }
 }
 
+```
+
+<br />
+
+```typescript
 interface ILinkedList<T> {
-    head: LNode<T> | null
-    size: number
     addNew(node: LNode<T>): void
     insertAt(node: LNode<T>, index: number): boolean
     removeFrom(index: number): LNode<T> | null
     removeElement(node: LNode<T>): LNode<T> | null
     indexOf(node: LNode<T>): number
+    getHeadNode(): LNode<T> | null
+    getSize(): number
     isEmpty(): boolean
 }
 
 class LinkedList<T> implements ILinkedList<T> {
-    head: LNode<T> | null
-    size: number
+    private head: LNode<T> | null
+    private size: number
 
     constructor() {
         this.head = null
@@ -286,14 +291,53 @@ Tree 자료구는 [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Documen
 
 <br />
 
-JavaScript에서 BST는 [이렇게](./bst.ts) 구현해볼 수 있습니다.
+### 5-2. BST in JavaScript
 
+JavaScript에서 BST는 [이렇게](./bst.ts) 구현해볼 수 있습니다. 각 노드의 데이터로 사용될 값은 서로 대소 비교가 가능해야하므로, `BSTData`와 같이 Type Alias를 사용해서 제한할 수 있습니다.
 
+```typescript
+export type BSTData = number | string // type alias
 
+class TNode<T> {
+    data: T
+    left: TNode<T> | null
+    right: TNode<T> | null
+
+    constructor(data: T) {
+        this.data = data
+        this.left = null
+        this.right = null
+    }
+}
+```
 
 <br />
 
-### 5-2. DFT(Depth-First Traversal)
+```typescript
+interface IBinarySearchTree<T> {
+    insert(data: T): TNode<T>
+    remove(data: T): TNode<T> | null
+    traverseInorder(node: TNode<T> | null, result: T[]): T[]
+    traversePreorder(node: TNode<T> | null, result: T[]): T[]
+    traversePostorder(node: TNode<T> | null, result: T[]): T[]
+    searchNode(node: TNode<T> | null, data: T): TNode<T> | null
+    getRootNode(): TNode<T> | null
+}
+
+class BinarySearchTree<T> implements IBinarySearchTree<T> {
+    private root: TNode<T> | null
+
+    constructor() {
+        this.root = null
+    }
+
+    // methods ...
+}
+```
+
+<br />
+
+### 5-3. DFT(Depth First Traversal)
 
 DFT는 Tree를 Depth First, 깊이 우선 순회하는 방법으로 보통 다음의 3가지로 나누어 이야기합니다. DFT는 DFS와 비슷하게 형제 노드보다 자식 노드를 우선으로 순회하기 때문에 코드로 DFT를 구현할 때는 Stack 자료구조가 사용되고, Stack은 Recursion으로 대체할 수 있으니 Recursion을 사용해서 구현하기도 합니다.
 
@@ -323,7 +367,7 @@ In-order 방법은 왼쪽 → 부모 → 오른쪽 자식 순으로 데이터를
 
 <br />
 
-### 5-3. BFT(Breadth-First Traversal)
+### 5-4. BFT(Breadth First Traversal)
 
 Tree의 깊이보다 너비가 클 때는 BFT가 더 나은 선택일 수 있습니다. DFT와 달리, 자식 노드보다는 형제 노드를 우선적으로 순회합니다. DFT가 Stack을 사용한다면, BFT는 Queue를 사용합니다.
 

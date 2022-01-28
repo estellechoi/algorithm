@@ -11,19 +11,19 @@ class LNode<T> {
 }
 
 interface ILinkedList<T> {
-    head: LNode<T> | null
-    size: number
     addNew(node: LNode<T>): void
     insertAt(node: LNode<T>, index: number): boolean
     removeFrom(index: number): LNode<T> | null
     removeElement(node: LNode<T>): LNode<T> | null
     indexOf(node: LNode<T>): number
+    getHeadNode(): LNode<T> | null
+    getSize(): number
     isEmpty(): boolean
 }
 
 class LinkedList<T> implements ILinkedList<T> {
-    head: LNode<T> | null
-    size: number
+    private head: LNode<T> | null
+    private size: number
 
     constructor() {
         this.head = null
@@ -154,7 +154,15 @@ class LinkedList<T> implements ILinkedList<T> {
         return NO_INDEX
     }
 
+    getHeadNode(): LNode<T> | null {
+        return this.head
+    }
+
+    getSize(): number {
+        return this.size
+    }
+
     isEmpty(): boolean {
-        return this.size === 0
+        return this.getSize() === 0
     }
 }
