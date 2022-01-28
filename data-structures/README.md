@@ -216,7 +216,7 @@ Linked List는 마치 Array처럼 동작하지만, 매우 다릅니다. Array는
 
 ### 4-2. Linked List in JavaScript
 
-JavaScript는 Linked List를 네이티브 객체로 제공하지 않기 때문에 [다음과 같이](./linkedlist.ts) 직접 구현해서 사용할 수 있겠습니다. `Node` 클래스는 자기 자신과 다음 노드에 대한 정보를 갖고, `LinkedList` 클래스는 가장 첫번 째 노드에 대한 정보와 List의 길이 정보를 갖도록하는 식으로 구현해볼 수 있습니다. [Implementation of LinkedList in Javascript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-linkedlist-javascript/) 문서를 참고했습니다.
+JavaScript는 Linked List를 네이티브 객체로 제공하지 않기 때문에 [다음과 같이](./linkedList.ts) 직접 구현해서 사용할 수 있겠습니다. `Node` 클래스는 자기 자신과 다음 노드에 대한 정보를 갖고, `LinkedList` 클래스는 가장 첫번 째 노드에 대한 정보와 List의 길이 정보를 갖도록하는 식으로 구현해볼 수 있습니다. [Implementation of LinkedList in Javascript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-linkedlist-javascript/) 문서를 참고했습니다.
 
 ```typescript
 class LNode<T> {
