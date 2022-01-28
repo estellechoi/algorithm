@@ -175,7 +175,7 @@ String(문자열)은 글자들로 이루어진 Array입니다. 그래서 거의 
 ```typescript
 let str = 'hello world'
 str[5] = ','
-console.log(str) // 'hello world'
+console.log(str[5]) // ' '
 
 str = 'hello,world'
 console.log(str) // 'hello,world'
@@ -193,6 +193,26 @@ console.log(str) // 'hello,world'
 <br />
 
 ## 4. Linked List
+
+### 4-1. Linked List vs Array
+
+Linked List는 마치 Array처럼 동작하지만, 매우 다릅니다. Array는 Index로 구분할 수 있는 원소들의 논리적 순서와 각 원소가 메모리 상에서 갖게되는 주소의 순서가 합니다. 반면 Linked List의 노드들은 논리적 순서와 물리적 순서가 다른데, 메모리 상에서는 연속된 주소가 할당되지 않고 제각각 존재하지만 서로에 대한 연결정보를 통해 논리적인 순서를 갖습니다. 이렇듯 서로 다른 메커니즘때문에 다음과 같은 차이점들이 있습니다.
+
+<br />
+
+#### 탐색
+
+- Array는 Index를 통해 특정 원소에 Random Access가 가능하다. 원소들이 연속된 메모리 주소를 갖기 때문. 시간복잡도는 `O(1)`.
+- Linked List에서 특정 노드에 접근하려면 첫 번째 원소부터 순차적으로 검사해야만 가능하다. 최악의 경우 시간복잡도는 `O(N)`.
+
+<br />
+
+#### 삽입/삭제
+
+- Array에 삽입/삭제가 발생하면 시간복잡도는 `O(N)`이다. 각 원소를이 차례로 밀리며 메모리의 연속된 주소상에 있도록 조정되기 때문.
+- Linked List에 삽입/삭제가 발생해도, 최악의 경우 시간복잡도는 `O(N)`이 되는데 이는 삽입/삭제하려는 노드를 탐색하는 과정이 수반되기 때문.
+
+<br />
 
 ### 4-🍎. What's next
 
@@ -490,3 +510,5 @@ bfs(graph, 1)
 - [Simplifying Functional Programming with Recursion (Javascript) - Meghan Hein](https://medium.com/weekly-webtips/simplifying-functional-programming-with-recursion-javascript-aa7007f4b159)
 - [Depth-First Search in TypeScript](https://www.devmaking.com/learn/algorithms/depth-first-search/typescript/)
 - [What is the difference between traversal and search? | Quora](https://www.quora.com/What-is-the-difference-between-traversal-and-search)
+- [Implementation of LinkedList in Javascript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-linkedlist-javascript/)
+- [Backend Engineer Interview - xlffm3](https://github.com/xlffm3/backend-engineer-interview/blob/main/data-structure/data-structure.md#q6-deque--arraydeque)
