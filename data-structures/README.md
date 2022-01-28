@@ -118,10 +118,10 @@ JavaScript에서 호출되는 모든 함수는 하나의 호출 스택에 쌓입
 Array에 관해서라면, Fixed Array와 Dynamic Array를 구분할 수 있어야합니다. JavaScript에서 Array 객체로 구현된 Array는 기본적으로 Dynamic Array 입니다. Array를 초기화하는 방법에 따라 최초 길이가 다를 수는 있지만, 언제든 `push()`, `pop()`과 같은 Array 메소드들을 사용하여 길이를 변경할 수 있습니다. 참고로 `Array()` 생성자를 사용하면 지정된 길이를 가진 빈 Array가 할당되고, `[]`와 같이 리터럴 방식으로 초기화하면 실제 원소들로 채워진 만큼의 길이를 가진 Array가 할당됩니다.
 
 ```typescript
-// array
+// array via constructor
 const arr: string[] = new Array<string>(5) // array with 5 empty slots created
 
-// dynamic array
+// array literal
 const dynamicArr: string[] = []
 ```
 
@@ -130,11 +130,11 @@ const dynamicArr: string[] = []
 실제로 위와 같이 선언한 것들을 콘솔에 찍어보면 다음과 같이 차이점을 확인할 수 있습니다.
 
 ```typescript
-// array
+// array via constructor
 console.log(arr.length) // 5
 console.log(arr) // [empty × 5]
 
-// dynamic array
+// array literal
 console.log(dynamicArr.length) // 0
 console.log(dynamicArr) // []
 ```
@@ -144,11 +144,11 @@ console.log(dynamicArr) // []
 이번에는 각각 `push()` 메소드를 사용하여 원소를 추가해보겠습니다. 생성자를 사용해서 만든 `arr`의 경우, 이미 할당된 5 개의 빈 공간들을 침범하지 않고 추가 공간을 만들어 6 번째 원소로서 추가합니다.
 
 ```typescript
-// array
+// array via constructor
 arr.push('Yujin') // [empty × 5, 'Yujin']
 console.log(arr.length) // 6
 
-// dynamic array
+// array literal
 dynamicArr.push('Yujin') // ['Yujin']
 console.log(dynamicArr.length) // 1
 ```
