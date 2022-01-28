@@ -286,6 +286,13 @@ Tree 자료구는 [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Documen
 
 <br />
 
+JavaScript에서 BST는 [이렇게](./bst.ts) 구현해볼 수 있습니다.
+
+
+
+
+<br />
+
 ### 5-2. DFT(Depth-First Traversal)
 
 DFT는 Tree를 Depth First, 깊이 우선 순회하는 방법으로 보통 다음의 3가지로 나누어 이야기합니다. DFT는 DFS와 비슷하게 형제 노드보다 자식 노드를 우선으로 순회하기 때문에 코드로 DFT를 구현할 때는 Stack 자료구조가 사용되고, Stack은 Recursion으로 대체할 수 있으니 Recursion을 사용해서 구현하기도 합니다.
@@ -552,4 +559,6 @@ bfs(graph, 1)
 - [Depth-First Search in TypeScript](https://www.devmaking.com/learn/algorithms/depth-first-search/typescript/)
 - [What is the difference between traversal and search? | Quora](https://www.quora.com/What-is-the-difference-between-traversal-and-search)
 - [Implementation of LinkedList in Javascript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-linkedlist-javascript/)
+- [Implementation of Binary Search Tree in Javascript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-binary-search-tree-javascript/?ref=lbp)
+- [Binary Search Tree | Set 1 (Search and Insertion) | GeeksForGeeks](https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/)
 - [Backend Engineer Interview - xlffm3](https://github.com/xlffm3/backend-engineer-interview/blob/main/data-structure/data-structure.md#q6-deque--arraydeque)
