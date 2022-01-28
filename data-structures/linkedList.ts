@@ -1,93 +1,147 @@
-// 배열은 처음이나 중간 지점에 데이터를 추가하거나 삭제하려면 모든 요소를 이동시켜야 하지만 
-// 링크드 리스트는 참조(링크)만 변경하면 되므로 데이터의 추가나 삭제가 빈번한 경우에 사용된다.
-'use strict'
-export type Node<T> = {
-    value: T
-    next: Node<T> | null
+class LNode<T> {
+    node: LNode<T>
+    next: LNode<T> | null
+
+    constructor(node: LNode<T>) {
+        this.node = node
+        this.next = null
+    }
 }
 
-interface ILinkedList<T> {
-    getByIndex(index: number): T | null
-    addToHead(value: T) : void
-    addToTail(value: T): void
-    addAtIndex(index: number, value: T): void
-    deleteAtIndex(index: number): void
+class LinkedList<T> {
+    head: LNode<T> | null
     size: number
-}
-
-class LinkedList<T> implements ILinkedList<T> {
-    private head: Node<T> | null
-    private _size: number
 
     constructor() {
         this.head = null
-        this._size = 0
+        this.size = 0
     }
 
-    public get size() {
-        return this._size
+    addNew(node: LNode<T>) {
+        const newNode = new LNode<T>(node)
+        let currNode: LNode<T>
+
+        if (this.head === null) {
+            this.head = newNode
+        } else {
+            // 가장 마지막 노드를 찾을 때까지 처음부터 순회
+            currNode = this.head
+            while(currNode.next) {
+                currNode = currNode.next
+            }
+
+            // 노드 추가
+            currNode.next = newNode
+        }
+
+        this.size += 1
     }
 
-    private getNodeByIndex(index: number): Node<T> | null {
-        if (index < 0 || index >= this.size) return null
+    insertAt(node: LNode<T>, index: number): boolean {
+        if (index < 0 || index > this.size) {
+            return false
+        }
 
-        let current = this.head
-        let i = 0
-        while (i < index) {
-            current = current!.next
+        const newNode = new LNode<T>(node)
+
+        if (index === 0) {
+            newNode.next = this.head
+            this.head = newNode
+            this.size += 1
+            return true
+        }
+
+        // 해당 Index에 도달할 때까지 첫 번째 노드부터 순차 탐색
+        let currNode: LNode<T> | null, prevNode: LNode<T> | null
+        currNode = this.head!
+
+        let i:number = 0
+        while(i < index) {
             i += 1
+            prevNode = currNode
+            currNode = currNode!.next
         }
 
-        return current
+        newNode.next = currNode
+        prevNode!.next = newNode
+
+        return true
     }
 
-    public getByIndex(index: number): T | null {
-        const current = this.getNodeByIndex(index)
-        return current ? current.value : null
-    }
-
-    public addToHead(value: T) {
-        this.head = {
-            value,
-            next: this.head
-        }
-        this._size += 1
-    }
-
-    public addToTail(value: T) {
-        if (this.size === 0) 
-            this.addToHead(value)
-        else {
-            const lastNode = this.getNodeByIndex(this.size - 1)!
-            lastNode.next = { value, next: null }
+    removeFrom(index: number): LNode<T> | null {
+        if (index < 0 || index > this.size || this.head === null) {
+            return null
         }
 
-        this._size += 1
-    }
-
-    public addAtIndex(index: number, value: T) {
-        if (index < 0 || index >= this.size) return
+        let currNode: LNode<T> | null, prevNode: LNode<T> | null
+        
+        currNode = this.head
 
         if (index === 0) {
-            this.addToHead(value)
-        } else {
-            const prevNode = this.getNodeByIndex(index - 1)!
-            prevNode.next = { value, next: prevNode.next }    
+            this.head = currNode.next
+            this.size -= 1
+            return currNode
         }
 
-        this._size += 1
+        // 해당 Index에 도달할 때까지 첫 번째 노드부터 순차 탐색
+        let i: number = 0
+        while(i < index) {
+            i += 1
+            prevNode = currNode
+            currNode = currNode!.next
+        }
+
+        prevNode!.next = currNode!.next
+        this.size -= 1
+        return currNode
     }
 
-    public deleteAtIndex(index: number) {
-        if (index < 0 || index >= this.size) return
+    removeElement(node: LNode<T>): LNode<T> | null {
+        if (this.size === 0) return null
 
-        if (index === 0) {
-            this.head = this.head!.next
-        } else {
-            const prevNode = this.getNodeByIndex(index - 1)!
-            prevNode.next = prevNode.next!.next    
+        let currNode: LNode<T> | null, prevNode: LNode<T> | null
+        
+        currNode = this.head!
+        prevNode = null
+
+        while(currNode !== null) {
+            if (currNode === node) {
+                if (prevNode === null) {
+                    this.head = currNode.next
+                } else {
+                    prevNode.next = currNode.next
+                }
+                this.size -= 1
+                return currNode
+            }
+
+            prevNode = currNode
+            currNode = currNode.next
         }
 
-        this._size+= 1
+        return null
+    }
+
+    indexOf(node: LNode<T>): number {
+        const NO_INDEX = -1
+
+        if (this.size === 0) return NO_INDEX
+
+        let currNode = this.head
+        let index: number = 0
+        while (currNode !== null) {
+            if (currNode === node){
+                return index
+            }
+
+            index += 1
+            currNode = currNode.next
+        }
+
+        return NO_INDEX
+    }
+
+    isEmpty(): boolean {
+        return this.size === 0
     }
 }
