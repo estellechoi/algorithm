@@ -240,7 +240,7 @@ interface ILinkedList<T> {
     isEmpty(): boolean
 }
 
-class LinkedList<T> {
+class LinkedList<T> implements ILinkedList<T> {
     head: LNode<T> | null
     size: number
 
