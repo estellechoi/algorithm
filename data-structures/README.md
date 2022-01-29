@@ -214,7 +214,7 @@ Linked List는 마치 Array처럼 동작하지만, 매우 다릅니다. Array는
 
 <br />
 
-### 4-2. Linked List in JavaScript
+### 4-2. Linked List in TypeScript
 
 JavaScript는 Linked List를 네이티브 객체로 제공하지 않기 때문에 [다음과 같이](./linkedList.ts) 직접 구현해서 사용할 수 있겠습니다. `LNode` 클래스는 자기 자신과 다음 노드에 대한 정보를 갖고, `LinkedList` 클래스는 가장 첫 번째 노드에 대한 정보와 List의 길이 정보를 갖도록하는 식으로 구현해볼 수 있습니다. [Implementation of LinkedList in Javascript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-linkedlist-javascript/) 문서를 참고했습니다.
 
@@ -291,7 +291,7 @@ Tree 자료구는 [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Documen
 
 <br />
 
-### 5-2. BST in JavaScript
+### 5-2. BST in TypeScript
 
 JavaScript에서 BST는 [이렇게](./bst.ts) 구현해볼 수 있습니다. 각 노드의 데이터로 사용될 값은 서로 대소 비교가 가능해야하므로, `BSTData`와 같이 Type Alias를 사용해서 제한할 수 있습니다.
 
@@ -430,8 +430,18 @@ console.log(graph[0][2]) // 7
 
 [Adjacency List](https://en.wikipedia.org/wiki/Adjacency_list)는 Matrix와 달리 List 관점에서 Graph 자료구조를 바라보는 방법으로, 두 노드간에 아무런 관계가 없다면 데이터를 저장하지 않습니다.
 
+![Graph](./../assets/graph.png)
+
+<br />
+
+코드에서 Adjacency List는 [`Array`](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array)나 [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) 을 사용해서 구현할 수 있는데, 배열을 사용한다면 각 Index가 Graph의 각 노드를 나타내도록 합니다. 예를 들어 위의 Graph를 구현할 때, `graph`라는 이름의 배열을 만들었다면, `graph[0]`은 노드 `0`의 인접 정보를 담습니다: `graph[0] = [[1, 5], [2, 7]]`
+
+> An entry array[i] represents the list of vertices adjacent to the ith vertex. - [Graph and its representations | GeeksForGeeks](https://www.geeksforgeeks.org/graph-and-its-representations/)
+
 ```typescript
-const graph: number[][][] = [
+type AdjNode = number[]
+
+const graph: AdjNode[][] = [
     [[1, 5], [2, 7]],
     [[0, 5]],
     [[0, 7]],
@@ -445,9 +455,7 @@ const node1: number[][] = graph[0] // [[1, 5], [2, 7]]
 const filtered = node1.filter(item => item[0] === 2) // [[2, 7]] → 7
 ```
 
-<br />
-
-Adjacency List는 다음과 같이 노드들의 인접 여부만 나타낼 수도 있습니다.
+다음과 같이 노드들의 인접 여부만 나타낼 수도 있고요.
 
 ```typescript
 const graph: number[][] = [
@@ -459,15 +467,72 @@ const graph: number[][] = [
 
 <br />
 
-### 6-3. Matrix vs List
+`Map`을 사용하면 조금 더 명확하게 표현할 수 있다고 보는데요, 배열을 사용하면 각 노드에 담는 데이터가 `number` 타입이 아닐 경우 배열의 Index와 별도로 매핑해줘야하기 때문입니다.
+
+```typescript
+const graph: Map<number, number[]> = new Map()
+graph.set(0, [1, 2])
+graph.set(1, [0])
+graph.set(2, [0])
+```
+
+<br />
+
+### 6-3. Adjacency Matrix vs Adjacency List
 
 상황에 따라 Matrix와 List 형태 중 더 나은 것을 선택해서 사용하면 됩니다. 각각의 장단점을 정리해보면,
 
-- Matrix: 모든 노드와 노드의 관계를 나타내기 위해 메모리를 절약할 수 없지만, 특정한 두 노드의 관계를 알고싶다면 한 번에 접근할 수 있음
+- Matrix: 모든 노드와 노드의 관계를 나타내기 때문에 메모리를 절약할 수 없지만 (공간복잡도 `O(N²)`), 특정한 두 노드의 관계를 알고싶다면 한 번에 접근할 수 있음. 이때 시간복잡도는 `O(1)`.
 
 - List: 실제 연결이 있는 경우에만 연결 정보를 담으면 되므로 메모리 절약, 특정한 두 노드의 관계를 알기 위해서는 인접 노드들을 순회하면서 찾아야하므로 느릴 수 있음
 
 <br />
+
+### 6-4. Directed vs Undirected
+
+Graph는 노드를 연결하는 엣지들이 방향성을 가지는지 여부에 따라 Directed / Undirected Graph로 나뉩니다. 바로 위에서 그림으로 살펴본 Graph는 엣지들이 화살표를 통해 노드 A가 노드 B를 가리키는 모양이므로 Directed Graph 입니다. `Map`을 사용해서 Adjacency List 형태의 Directed Graph를 코딩한다면, 다음과 같이 방향 정보를 포함해볼 수 있겠습니다.
+
+```typescript
+interface AdjNode<T> {
+    node: T
+    isForward: boolean
+}
+
+const graph: Map<number, AdjNode<number>[]> = new Map()
+graph.set(0, [{ node: 1, isForward: true }, { node: 2, isForward: true }])
+graph.set(1, [{ node: 0, isForward: false }])
+graph.set(2, [{ node: 0, isForward: false }])
+```
+
+<br />
+
+### 6-5. Graph in TypeScript
+
+저는 `Map`을 사용해서 Adjacency List 형태의 Undirected Graph를 구현해보았고, [Implementation of Graph in JavaScript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-graph-javascript/)를 참고했습니다. 전체 코드는 [여기에](./graph.ts) 있어요.
+
+```typescript
+interface IGraph<T> {
+    addVertex(v: T): T | null
+    addEdge(v: T, w: T): void
+    dfs(startV: T): T[]
+    dfsRecur(v: T, visited: Set<T>, result: T[]): T[]
+    bfs(startV: T): T[]
+    getSize(): number
+    getAdjList(): Map<T, T[]>
+}
+
+class Graph<T> implements IGraph<T> {
+    private size: number
+    private adjList: Map<T, T[]>
+
+    constructor(size: number) {
+        this.size = size
+        this.adjList = new Map()
+    }
+
+    // methods ...
+}
+```
 
 ### 6-🍎. What's next
 
@@ -498,29 +563,37 @@ DFS를 코드로 구현할 때는 Stack을 사용하는데요, 루트에서 인�
 #### Stack
 
 ```typescript
-function dfs(graph: number[][], startNode: number) {
-    const stack: number[] = []
-    const visited: Set<number> = new Set()
+class Graph<T> implements IGraph<T> {
+    // ..
 
-    visited.add(startNode)
-    stack.push(startNode)
+    dfs(startV: T): T[] {
+        if (!this.adjList.has(startV)) return []
 
-    while (stack.length > 0) {
-        // 가장 마지막에 쌓인 노드부터 추출하고
-        const node = stack.pop()!
-
-        // 방금 꺼낸 노드의 모든 인접 노드를 검사하자
-        const adjs = graph[node]
-        for (let adj of adjs) {
-            if (!visited.has(adj)) {
-                stack.push(adj) // 인접 노드들을 Stack 위에 쌓자
-                visited.add(adj) // 중복 검사를 피하기 위한 방문 처리
+        const result: T[] = []
+        const stack: T[] = []
+        const visited: Set<T> = new Set()
+    
+        visited.add(startV)
+        stack.push(startV)
+    
+        while (stack.length > 0) {
+            // 가장 마지막에 쌓인 노드부터 추출하고
+            const node = stack.pop()!
+            result.push(node)
+    
+            // 방금 꺼낸 노드의 모든 인접 노드를 검사하자
+            const adjs = this.adjList.get(node)!
+            for (let adj of adjs) {
+                if (!visited.has(adj)) {
+                    stack.push(adj) // 인접 노드들을 Stack 위에 쌓자
+                    visited.add(adj) // 중복 검사를 피하기 위한 방문 처리
+                }
             }
         }
+
+        return result
     }
 }
-
-dfs(graph, 1)
 ```
 
 <br />
@@ -528,18 +601,27 @@ dfs(graph, 1)
 #### Recursion
 
 ```typescript
-function dfs(graph: number[][], node: number, visited: Set<number>) {
-    visited.add(node) // 방문 처리
+class Graph<T> implements IGraph<T> {
+    // ..
 
-    // 모든 인접 노드를 검사하자
-    const adjs = graph[node]
-    for (let adj of adjs) {
-        // 인접 노드를 핸들링하는 함수를 호출 스택에 쌓자
-        if (!visited.has(adj)) dfs(graph, adj, visited)
-    }  
+    dfsRecur(v: T, visited: Set<T> = new Set(), result: T[] = []): T[] {
+        if (!this.adjList.has(v)) return result
+
+        visited.add(v) // 방문 처리
+        result.push(v)
+
+        // 모든 인접 노드를 검사하자
+        const adjs = this.adjList.get(v)!
+        for (let adj of adjs) {
+            // 인접 노드를 핸들링하는 함수를 호출 스택에 쌓자
+            if (!visited.has(adj)) {
+                this.dfsRecur(adj, visited, result)
+            }
+        }  
+
+        return result
+    }
 }
-
-dfs(graph, 1, new Set())
 ```
 
 <br />
@@ -559,29 +641,37 @@ DFS가 Stack/호출스택을 사용한다면, BFS는 Queue를 사용합니다. �
 #### Queue
 
 ```typescript
-function bfs(graph: number[][], startNode: number) {
-    const queue: number[] = []
-    const visited: Set = new Set()
+class Graph<T> implements IGraph<T> {
+    // ..
+    
+    bfs(startV: T): T[] {
+        if (!this.adjList.has(startV)) return []
 
-    visited.add(startNode)
-    queue.push(startNode)
-
-    while (queue.length > 0) {
-        // 가장 먼저 넣었던 노드부터 빼내고
-        const node = queue.shift()
-
-        // 이 노드의 인접 노드들을 Queue의 뒤에 추가해준다
-        const adjs = graph[node]
-        for (let adj of adjs) {
-            if (!visited.has(adj)) {
-                queue.push(adj)
-                visited.add(adj) // 중복 검사를 피하기 위한 방문 처리
+        const result: T[] = []
+        const queue: T[] = []
+        const visited: Set<T> = new Set()
+    
+        visited.add(startV)
+        queue.push(startV)
+    
+        while (queue.length > 0) {
+            // 가장 먼저 넣었던 노드부터 빼내고
+            const node = queue.shift()!
+            result.push(node)
+    
+            // 이 노드의 인접 노드들을 Queue의 뒤에 추가해준다
+            const adjs = this.adjList.get(node)!
+            for (let adj of adjs) {
+                if (!visited.has(adj)) {
+                    queue.push(adj)
+                    visited.add(adj) // 중복 검사를 피하기 위한 방문 처리
+                }
             }
         }
+
+        return result
     }
 }
-
-bfs(graph, 1)
 ```
 
 <br />
@@ -605,4 +695,5 @@ bfs(graph, 1)
 - [Implementation of LinkedList in Javascript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-linkedlist-javascript/)
 - [Implementation of Binary Search Tree in Javascript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-binary-search-tree-javascript/?ref=lbp)
 - [Binary Search Tree | Set 1 (Search and Insertion) | GeeksForGeeks](https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/)
+- [Graph and its representations | GeeksForGeeks](https://www.geeksforgeeks.org/graph-and-its-representations/)
 - [Backend Engineer Interview - xlffm3](https://github.com/xlffm3/backend-engineer-interview/blob/main/data-structure/data-structure.md#q6-deque--arraydeque)
