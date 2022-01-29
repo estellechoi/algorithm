@@ -394,6 +394,8 @@ Heap은 일종의 Tree 자료구조 중 하나인데, Tree 중에서도 Complete
 
 <img src="./../assets/heap.png" width="680" />
 
+사진출처: [Implementing Heaps in JavaScript - Ankita Masand](https://blog.bitsrc.io/implementing-heaps-in-javascript-c3fbf1cb2e65)
+
 <br />
 
 Heap을 사용할 때 시간복잡도는 각각 다음과 같은데요, Heap은 Binary Tree 형태를 갖기 때문에 특정 노드를 추가하거나 제거할 때의 시간복잡도는 `O(logN)`이 됩니다. Binary 형태의 자료구조는 늘 절반씩 나누어 탐색할 수 있기 때문입니다!
