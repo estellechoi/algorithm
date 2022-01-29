@@ -398,14 +398,16 @@ Heap은 일종의 Tree 자료구조 중 하나인데, Tree 중에서도 Complete
 
 <br />
 
+위에서 언급했듯이 Heap은 최댓값, 최솟값을 효율적으로 찾는데 최적화된 자료구조입니다. 즉, 여러 일들을 Priority에 따라 정리하고 우선순위별로 탐색할 때도 매우 유용합니다. 이러한 Heap의 특성을 사용하여 Heap 기반으로 만들어진 자료구조가 [Priority Queue](https://en.wikipedia.org/wiki/Priority_queue)입니다. Heap은 실제로 OS가 우선순위에따라 Job들을 스케쥴링할 때도 사용합니다.
+
+<br />
+
+#### 시간복잡도
+
 Heap을 사용할 때 시간복잡도는 각각 다음과 같은데요, Heap은 Binary Tree 형태를 갖기 때문에 특정 노드를 추가하거나 제거할 때의 시간복잡도는 `O(logN)`이 됩니다. Binary 형태의 자료구조는 늘 절반씩 나누어 탐색할 수 있기 때문입니다!
 
 - 최댓값/최솟값 접근: `O(1)`
 - 노드 추가/제거: `O(logN)`
-
-<br />
-
-위에서 언급했듯이 Heap은 최댓값, 최솟값을 효율적으로 찾는데 최적화된 자료구조입니다. 즉, 여러 일들을 Priority에 따라 정리하고 우선순위별로 탐색할 때도 매우 유용합니다. 이러한 Heap의 특성을 사용하여 Heap 기반으로 만들어진 자료구조가 [Priority Queue](https://en.wikipedia.org/wiki/Priority_queue)입니다. Heap은 실제로 OS가 우선순위에따라 Job들을 스케쥴링할 때도 사용합니다.
 
 <br />
 
