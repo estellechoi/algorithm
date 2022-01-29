@@ -5,9 +5,10 @@
 3. Array & String
 4. Linked List
 5. Tree
-6. Graph
-7. DFS & BFS
-8. Hash Table (Map)
+6. Heap
+7. Graph
+8. DFS & BFS
+9. Hash Table (Map)
 
 <br />
 
@@ -380,7 +381,43 @@ Tree의 깊이보다 너비가 클 때는 BFT가 더 나은 선택일 수 있습
 
 <br />
 
-## 6. Graph
+## 6. Heap
+
+### 6-1. Heap as a Complete Binary Tree
+
+Heap은 일종의 Tree 자료구조 중 하나인데, Tree 중에서도 Complete Binary Tree와 거의 유사합니다. Complete Tree는 마지막 Depth를 제외한 나머지 Depth에 노드들이 모두 차있고, 노드를 추가할 때 마지막 Depth의 가장 왼쪽부터 노드가 채워집니다. Heap은 기본적으로 Max Heap, Min Heap 두 가지로 나뉘는데, `O(1)`의 시간복잡도로 최댓값이나 최솟값에 바로 접근하도록 고안된 자료구조이기 때문입니다.
+
+- Max Heap: 부모 노드의 값이 자식 노드들의 값보다 항상 큼
+- Min Heap: 부모 노드의 값이 자식 노드들의 값보다 항상 작음
+
+<br />
+
+<img src="./../assets/heap.png" width="680" />
+
+<br />
+
+Heap을 사용할 때 시간복잡도는 각각 다음과 같은데요, Heap은 Binary Tree 형태를 갖기 때문에 특정 노드를 추가하거나 제거할 때의 시간복잡도는 `O(logN)`이 됩니다. Binary 형태의 자료구조는 늘 절반씩 나누어 탐색할 수 있기 때문입니다!
+
+- 최댓값/최솟값 접근: `O(1)`
+- 노드 추가/제거: `O(logN)`
+
+<br />
+
+위에서 언급했듯이 Heap은 최댓값, 최솟값을 효율적으로 찾는데 최적화된 자료구조입니다. 즉, 여러 일들을 Priority에 따라 정리하고 우선순위별로 탐색할 때도 매우 유용합니다. 이러한 Heap의 특성을 사용하여 Heap 기반으로 만들어진 자료구조가 [Priority Queue](https://en.wikipedia.org/wiki/Priority_queue)입니다. Heap은 실제로 OS가 우선순위에따라 Job들을 스케쥴링할 때도 사용합니다.
+
+<br />
+
+### 6-2. Min Heap in TypeScript
+
+[Implementing Heaps in JavaScript - Ankita Masand](https://blog.bitsrc.io/implementing-heaps-in-javascript-c3fbf1cb2e65) 글을 참고했습니다.
+
+<br />
+
+### 6-3. Max Heap in TypeScript
+
+<br />
+
+## 7. Graph
 
 Graph 자료구조는 여러 관점에서 설명할 수 있는데, 가장 간단하게 Tree 자료구조에서 "부모 노드는 하나만 가질 수 있다"는 규칙을 제외하면 Graph 자료구조가 됩니다. _many-to-many_ 관계인 데이터들을 담아야할 때 Graph 자료구조가 사용됩니다.
 
@@ -394,7 +431,7 @@ Graph에서 다음 개념들을 알아둬야 합니다. 위의 Tree 섹션에서
 
 <br />
 
-### 6-1. Adjacency Matrix
+### 7-1. Adjacency Matrix
 
 Graph 자료구조를 코드에서 다루기 위해서는 명확한 표현 방법이 필요한데, 그 중 하나가 [Adjacency Matrix](https://en.wikipedia.org/wiki/Adjacency_matrix) 입니다. 노드와 노드의 관계를 각각 `(x, y)` 형태의 Matrix(행렬)로 나타낼 수 있다는 아이디어로, 아래와 같이 `0` 노드와 `1` 노드를 잇는 엣지에 `5`라고 번호를 매기면 `(0, 1) = 5`로 노드의 연결 관계를 표현합니다. 같은 방식으로 `1` 노드와 `2` 노드는 연결되어있지 않으므로 `(1, 2) = null`로 표현할 수 있겠죠.
 
@@ -426,7 +463,7 @@ console.log(graph[0][2]) // 7
 
 <br />
 
-### 6-2. Adjacency List
+### 7-2. Adjacency List
 
 [Adjacency List](https://en.wikipedia.org/wiki/Adjacency_list)는 Matrix와 달리 List 관점에서 Graph 자료구조를 바라보는 방법으로, 두 노드간에 아무런 관계가 없다면 데이터를 저장하지 않습니다.
 
@@ -478,7 +515,7 @@ graph.set(2, [0])
 
 <br />
 
-### 6-3. Adjacency Matrix vs Adjacency List
+### 7-3. Adjacency Matrix vs Adjacency List
 
 상황에 따라 Matrix와 List 형태 중 더 나은 것을 선택해서 사용하면 됩니다. 각각의 장단점을 정리해보면,
 
@@ -488,7 +525,7 @@ graph.set(2, [0])
 
 <br />
 
-### 6-4. Directed vs Undirected
+### 7-4. Directed vs Undirected
 
 Graph는 노드를 연결하는 엣지들이 방향성을 가지는지 여부에 따라 Directed / Undirected Graph로 나뉩니다. 바로 위에서 그림으로 살펴본 Graph는 엣지들이 화살표를 통해 노드 A가 노드 B를 가리키는 모양이므로 Directed Graph 입니다. `Map`을 사용해서 Adjacency List 형태의 Directed Graph를 코딩한다면, 다음과 같이 방향 정보를 포함해볼 수 있겠습니다.
 
@@ -506,7 +543,7 @@ graph.set(2, [{ node: 0, isForward: false }])
 
 <br />
 
-### 6-5. Graph in TypeScript
+### 7-5. Graph in TypeScript
 
 저는 `Map`을 사용해서 Adjacency List 형태의 Undirected Graph를 구현해보았고, [Implementation of Graph in JavaScript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-graph-javascript/)를 참고했습니다. 전체 코드는 [여기에](./graph.ts) 있어요.
 
@@ -534,13 +571,13 @@ class Graph<T> implements IGraph<T> {
 }
 ```
 
-### 6-🍎. What's next
+### 7-🍎. What's next
 
 - [Leetcode graph problems](https://leetcode.com/tag/graph/)
 
 <br />
 
-## 7. DFS & BFS
+## 8. DFS & BFS
 
 DFS/BFS는 탐색 알고리즘 중에서도 자주 언급되는 것들인데, 탐색 방향에 있어 각각 Depth/Breadth(깊이/너비) 기준으로 First Search(우선 탐색)하는 알고리즘입니다. 다음 그래프를 `1` 노드부터 DFS, BFS 해보면서 정리해보려고 합니다. Pre-order 이고, 같은 레벨의 노드 중에서는 숫자가 작은 노드부터 순회합니다.
 
@@ -548,7 +585,7 @@ DFS/BFS는 탐색 알고리즘 중에서도 자주 언급되는 것들인데, �
 
 <br />
 
-### 7-1. DFS
+### 8-1. DFS
 
 DFS, 깊이우선탐색. 위의 그래프를 DFS하면 데이터를 이렇게 추출할 수 있습니다. 일단 하나의 자식 노드를 탐색하기 시작하면, 해당 자식이 갖고있는 하위 Tree를 모두 탐색한 후에 그 자식의 형제 노드를 탐색하기 시작합니다.
 
@@ -626,7 +663,7 @@ class Graph<T> implements IGraph<T> {
 
 <br />
 
-### 7-2. BFS
+### 8-2. BFS
 
 BFS는 너비우선탐색으로, 위의 동일한 Graph를 BFS하면 다음 순서로 데이터를 추출할 수 있습니다.
 
@@ -676,7 +713,7 @@ class Graph<T> implements IGraph<T> {
 
 <br />
 
-## 8. Hash Table (Map)
+## 9. Hash Table (Map)
 
 <br />
 
@@ -696,4 +733,5 @@ class Graph<T> implements IGraph<T> {
 - [Implementation of Binary Search Tree in Javascript | GeeksForGeeks](https://www.geeksforgeeks.org/implementation-binary-search-tree-javascript/?ref=lbp)
 - [Binary Search Tree | Set 1 (Search and Insertion) | GeeksForGeeks](https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/)
 - [Graph and its representations | GeeksForGeeks](https://www.geeksforgeeks.org/graph-and-its-representations/)
+- [Implementing Heaps in JavaScript - Ankita Masand](https://blog.bitsrc.io/implementing-heaps-in-javascript-c3fbf1cb2e65)
 - [Backend Engineer Interview - xlffm3](https://github.com/xlffm3/backend-engineer-interview/blob/main/data-structure/data-structure.md#q6-deque--arraydeque)
