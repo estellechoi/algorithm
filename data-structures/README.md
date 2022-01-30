@@ -385,7 +385,7 @@ Tree의 깊이보다 너비가 클 때는 BFT가 더 나은 선택일 수 있습
 
 ### 6-1. Heap as a Complete Binary Tree
 
-Heap은 일종의 Tree 자료구조 중 하나인데, Tree 중에서도 Complete Binary Tree와 거의 유사합니다. Complete Tree는 마지막 Depth를 제외한 나머지 Depth에 노드들이 모두 차있고, 노드를 추가할 때 마지막 Depth의 가장 왼쪽부터 노드가 채워집니다. Heap은 기본적으로 Max Heap, Min Heap 두 가지로 나뉘는데, `O(1)`의 시간복잡도로 최댓값이나 최솟값에 바로 접근하도록 고안된 자료구조이기 때문입니다.
+Binary Heap은 일종의 Tree 자료구조 중 하나인데, Tree 중에서도 Complete Binary Tree와 거의 유사합니다. Complete Tree는 마지막 Depth를 제외한 나머지 Depth에 노드들이 모두 차있고, 노드를 추가할 때 마지막 Depth의 가장 왼쪽부터 노드가 채워집니다. Heap은 기본적으로 Max Heap, Min Heap 두 가지로 나뉘는데, `O(1)`의 시간복잡도로 최댓값이나 최솟값에 바로 접근하도록 고안된 자료구조이기 때문입니다.
 
 - Max Heap: 부모 노드의 값이 자식 노드들의 값보다 항상 큼
 - Min Heap: 부모 노드의 값이 자식 노드들의 값보다 항상 작음
@@ -404,20 +404,115 @@ Heap은 일종의 Tree 자료구조 중 하나인데, Tree 중에서도 Complete
 
 #### 시간복잡도
 
-Heap을 사용할 때 시간복잡도는 각각 다음과 같은데요, Heap은 Binary Tree 형태를 갖기 때문에 특정 노드를 추가하거나 제거할 때의 시간복잡도는 `O(logN)`이 됩니다. Binary 형태의 자료구조는 늘 절반씩 나누어 탐색할 수 있기 때문입니다!
+Binary Heap을 사용할 때 시간복잡도는 각각 다음과 같은데요, Binary Tree 형태를 갖기 때문에 특정 노드를 추가하거나 제거할 때의 시간복잡도는 `O(logN)`이 됩니다. Binary 형태의 자료구조는 늘 절반씩 나누어 탐색할 수 있기 때문입니다!
 
 - 최댓값/최솟값 접근: `O(1)`
 - 노드 추가/제거: `O(logN)`
 
 <br />
 
-### 6-2. Min Heap in TypeScript
+### 6-2. Array를 사용한 Heap 구현
 
-[Implementing Heaps in JavaScript - Ankita Masand](https://blog.bitsrc.io/implementing-heaps-in-javascript-c3fbf1cb2e65) 글을 참고했습니다.
+Heap은 보통 Array를 사용해서 구현하는데, 부모 노드와 자식 노드의 관계를 연역해보면 다음 패턴을 발견할 수 있습니다. [Array Representation Of Binary Heap | GeeksForGeeks](https://www.geeksforgeeks.org/array-representation-of-binary-heap/) 글을 참고했습니다.
+
+- `arr[i]`의 부모 노드는 `arr[Math.floor((i - 1)/ 2)]`
+- `arr[i]`의 왼쪽 자식 노드는 `arr[(2 * i) + 1]`
+- `arr[i]`의 오른쪽 자식 노드는 `arr[(2 * i) + 2]`
 
 <br />
 
-### 6-3. Max Heap in TypeScript
+### 6-3. Min Heap in TypeScript
+
+Min Heap은 [이렇게](./minheap.ts) 구현해보았고, [Binary Heap | GeeksForGeeks](https://www.geeksforgeeks.org/binary-heap/) 글을 참고했습니다.
+
+```typescript
+export type BinaryHeapData = number | string // type alias
+
+interface IMinHeap<T> {
+    insert(node: T): void
+    getParent(index: number): T | null
+    getLeftChild(index: number): T | null
+    getRightChild(index: number): T | null
+    getMin(): T | null
+    getSize(): number
+}
+
+class MinHeap<T> implements IMinHeap<T> {
+    private heap: T[]
+
+    constructor() {
+        this.heap = []
+    }
+
+    // methods ...
+}
+```
+
+<br />
+
+Min Heap에 노드를 추가하는 일은 Recursion을 사용했는데, 일단 노드를 Array의 가장 끝에 Push한 후 부모 노드와 비교하여 부모 노드보다 값이 작다면 서로 Swap하는 일을 Tree Depth를 거스르며 반복하도록 했습니다.
+
+```typescript
+class MinHeap<T> implements IMinHeap<T> {
+    // ..
+
+    insert(node: T) {
+        this.heap.push(node) // 일단 push
+        this.heapifyUp(this.heap.length - 1) // 부모 노드와 비교하고 swap
+    }
+
+    private heapifyUp(index: number) {
+        const parentIndex = this.getParentIndex(index)
+
+        if (parentIndex < 0) return
+
+        if (this.heap[parentIndex] > this.heap[index]) {
+            // swap
+            const parent = this.heap[parentIndex]
+            this.heap[parentIndex] = this.heap[index]
+            this.heap[index] = parent
+            // recursion
+            this.heapifyUp(parentIndex)
+        }
+    }   
+    
+    // ..
+}
+```
+
+<br />
+
+### 6-4. Max Heap in TypeScript
+
+Max Heap은 구현에 있어서 Min Heap과 다를 것이 거의 없습니다. 노드를 추가할 때 부모 노드와의 값 비교시 부등호의 방향만 반대입니다.
+
+```typescript
+class MaxHeap<T> implements IMaxHeap<T> {
+    // ..
+
+    insert(node: T) {
+        this.heap.push(node) // 일단 push
+        this.heapifyUp(this.heap.length - 1) // 부모 노드와 비교하고 swap
+    }
+
+    private heapifyUp(index: number) {
+        const parentIndex = this.getParentIndex(index)
+
+        if (parentIndex < 0) return
+
+        if (this.heap[parentIndex] < this.heap[index]) {
+            // swap
+            const parent = this.heap[parentIndex]
+            this.heap[parentIndex] = this.heap[index]
+            this.heap[index] = parent
+            // recursion
+            this.heapifyUp(parentIndex)
+        }
+    }   
+    
+    // ..
+}
+```
 
 <br />
 
@@ -738,4 +833,5 @@ class Graph<T> implements IGraph<T> {
 - [Binary Search Tree | Set 1 (Search and Insertion) | GeeksForGeeks](https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/)
 - [Graph and its representations | GeeksForGeeks](https://www.geeksforgeeks.org/graph-and-its-representations/)
 - [Implementing Heaps in JavaScript - Ankita Masand](https://blog.bitsrc.io/implementing-heaps-in-javascript-c3fbf1cb2e65)
+- [Binary Heap | GeeksForGeeks](https://www.geeksforgeeks.org/binary-heap/) 글을 참고했습니다.
 - [Backend Engineer Interview - xlffm3](https://github.com/xlffm3/backend-engineer-interview/blob/main/data-structure/data-structure.md#q6-deque--arraydeque)
