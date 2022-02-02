@@ -812,7 +812,7 @@ class Graph<T> implements IGraph<T> {
 
 <br />
 
-## 9. Hash Table
+## 9. Hash Table (Map)
 
 ### 9-1. Direct Address Table & Hash Table
 
