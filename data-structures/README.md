@@ -844,7 +844,7 @@ Hash Table의 유명한 단점은 해시 충돌인데, 다른 값을 넣어도 �
 
 <br />
 
-#### Open Address: 선형 탐사법(Linear Probing), 제곱 탐사법(Quadratic Probing), 이중해싱(Double Hashing)
+#### Open Address
 
 Open Address, 개방 주소법은 해시 충돌 발생시 새로운 주소를 탐사(Probe)하여 빈 곳에 충돌이 일어난 데이터를 넣는 방식입니다. 해시 함수를 통해 얻은 Index가 아닌 다른 Index의 공간을 허용한다는 뜻으로 Open Address라고 부릅니다.
 
