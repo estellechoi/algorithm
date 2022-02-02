@@ -812,7 +812,59 @@ class Graph<T> implements IGraph<T> {
 
 <br />
 
-## 9. Hash Table (Map)
+## 9. Hash Table
+
+### 9-1. Direct Address Table & Hash Table
+
+Hash Table은 Key-Value 쌍으로 이루어진 데이터를 저장하는 자료구조로, Key 값을 [해시 함수](https://en.wikipedia.org/wiki/Hash_function)에 통과시켜 나온 해시값을 Index로 사용합니다. JavaScript에서는 [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections) 객체가 Hash Table의 구현체라고 볼 수 있습니다.
+
+> Maps must be implemented using either hash tables or other mechanisms that, on average, provide access times that are sublinear on the number of elements in the collection. - [ECMAScript 2022 Specification](https://tc39.es/ecma262/#sec-map-objects)
+
+<br />
+
+Hash Table은 [Direct Address Table](https://www.geeksforgeeks.org/direct-address-table/)이라는 옛 자료구조에서 시작된 개념으로, Direct Address Table은 입력받은 Value를 곧 Key로 사용하는 데이터 매핑 방식을 사용하는 자료구조입니다. Direct Address Table은 원하는 값이 곧 Key이므로, 원하는 값을 편리하게 꺼내 쓸 수 있다는 장점이 있지만 적재율 관점에서는 최악입니다. 다음과 같이 단 2 개의 데이터만 저장하는데 Key와 Value를 일치시키기 위해 101개의 메모리 공간을 차지하기 때문입니다.
+
+```typescript
+const arr: number[] = []
+arr[10] = 10
+arr[100] = 100
+
+console.log(arr) // [empty × 10, 10, empty × 89, 100]
+```
+
+<br />
+
+이러한 단점을 해결하기 위해 고안된 개념이 Hash Table로, Key값을 해시 함수에 통과시켜 얻은 해시값을 Index로 사용하는데, 이 해시 함수는 원하는 범위 내의 해시값만 뱉어내도록 만들기 때문에 늘 원하는 만큼의 메모리 공간 내에서 데이터를 처리할 수 있게 되었습니다.
+
+<br />
+
+### 9-2. 해시 충돌(Collision)
+
+Hash Table의 유명한 단점은 해시 충돌인데, 다른 값을 넣어도 해시 함수가 만들어내는 해시값이 완전히 일치하여 충돌이 일어날 수 있습니다. 이처럼 해시 테이블에는 해시의 충돌이라는 단점이 있기 때문에 Hash Table을 구현할 때 가장 중요한 것은 해시 함수가 얼마나 균일하게 해시값을 퍼트릴 수 있느냐라고 볼 수도 있습니다. 이 해시 충돌을 방지하기 위해 몇 가지 추가로 고안된 방법들이 있는데, 대표적으로 Open Address와 Separate Chaining이 있습니다.
+
+<br />
+
+#### Open Address: 선형 탐사법(Linear Probing), 제곱 탐사법(Quadratic Probing), 이중해싱(Double Hashing)
+
+Open Address, 개방 주소법은 해시 충돌 발생시 새로운 주소를 탐사(Probe)하여 빈 곳에 충돌이 일어난 데이터를 넣는 방식입니다. 해시 함수를 통해 얻은 Index가 아닌 다른 Index의 공간을 허용한다는 뜻으로 Open Address라고 부릅니다.
+
+- 선형 탐사법(Linear Probing): 충돌이 일어난 Index로부터 `n` 칸만큼 이동한 곳을 허용하는 방법. 단점은 특정 해시 값의 주변이 모두 채워져있는 일차 군집화(Primary Clustering)문제에 취약하다는 것.
+
+- 제곱 탐사법(Quadratic Probing): 탐사폭이 고정되어있지 않고, 제곱수씩 늘어남 (`1²`, `2²`, `3²`, ...). 선형 탐사법보다 낫지만 여전히 군집화 문제에 취약함.
+
+- 이중해싱(Double Hashing): 충돌 발생시 탐사폭을 얻기 위해 해시 함수를 이중으로 사용하는 방법. 이때 해싱 중복을 피하기 위해 Hash Table 사이즈는 [소수](https://ko.wikipedia.org/wiki/%EC%86%8C%EC%88%98_(%EC%88%98%EB%A1%A0))를 사용하는 것이 좋음.
+
+<br />
+
+#### Separate Chaining
+
+Separate Chaining은 해시 충돌을 우회하는 방법으로, 해시값이 같으면 다른 곳에 저장하는 것이 아니라 원래 저장되어야할 공간에 List 형태로 값을 쌓는 방식입니다. 예를 들어, 어떤 해시 함수가 계속 Index `1`을 가리키도록 해시값을 뱉어낸다면, 입력된 값들은 모두 Index `1` 공간의 List 자료구조에 저장됩니다. 이때 Linked List가 주로 사용되는데, 값을 추가할 때의 효율성을 극대화하기 위해 List의 끝에 값을 붙이지않고 Head에 추가하는 방법이 일반적입니다. Linked List에서는 어떤 값에 접근하려면 Head부터 모든 노드를 순회해야하기 때문이죠. 값을 찾을 때는 어쩔 수 없이 Linked List를 순회해야하므로 시간복잡도는 `O(n)`입니다.
+
+<br />
+
+### 9-3. Table Resizing
+
+어찌됐든 Hash Table을 구현할 때는 해시 함수가 해시값을 얼마나 균등하게 뱉어낼 수 있는가가 관건입니다. 또한, Open Address 방법을 사용하다보면 결국 정해진 공간을 모두 채우게되고, Seperate Chaining을 사용하다보면 특정 Index가 가리키는 Linked List의 길이가 너무 길어져 값을 찾는 비용이 높아질 수 있습니다. 따라서 Hash Table은 꽉꽉 채우기보다는 어느 정도 비워져있는 것이 성능상 좋다는 것이 중론이고, 일정 크기를 채우면 새로운 Table을 선언해서 데이터를 옮겨담는 작업을 하도록 구현해야합니다. 이때 Seperate Chaining을 사용한다면 Rehashing을 통해 너무 길어진 Linked List의 데이터를 나누도록 합니다.
 
 <br />
 
@@ -835,3 +887,4 @@ class Graph<T> implements IGraph<T> {
 - [Implementing Heaps in JavaScript - Ankita Masand](https://blog.bitsrc.io/implementing-heaps-in-javascript-c3fbf1cb2e65)
 - [Binary Heap | GeeksForGeeks](https://www.geeksforgeeks.org/binary-heap/) 글을 참고했습니다.
 - [Backend Engineer Interview - xlffm3](https://github.com/xlffm3/backend-engineer-interview/blob/main/data-structure/data-structure.md#q6-deque--arraydeque)
+- [JavaScript와 함께 해시테이블을 파헤쳐보자 | Evans Library](https://evan-moon.github.io/2019/06/25/hashtable-with-js/)
