@@ -8,7 +8,9 @@
 6. Heap
 7. Graph
 8. DFS & BFS
-9. Hash Table (Map)
+9. Hash Table
+10. Set
+11. Map
 
 <br />
 
@@ -812,13 +814,17 @@ class Graph<T> implements IGraph<T> {
 
 <br />
 
-## 9. Hash Table (Map)
+## 9. Hash Table
 
-### 9-1. `Map` in JavaScript
+### 9-1. Hash Table
 
-Hash Table은 Key-Value 쌍으로 이루어진 데이터를 저장하는 자료구조로, 내부적으로는 Array를 사용하여 구현됩니다. Key 값은 [해시 함수](https://en.wikipedia.org/wiki/Hash_function)를 통해 해시값으로 변환되고, 이 해시값을 Index로 사용합니다. JavaScript 런타임에서는 [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections) 객체가 Hash Table의 구현체이거나, 적어도 Hash Table처럼 동작할 것이라고 기대할 수 있으므로, `Map`을 사용하면 됩니다.
+Hash Table은 [해시 함수](https://en.wikipedia.org/wiki/Hash_function)가 뱉어낸 해시값을 Index로 사용하는, Array 기반의 자료구조입니다. Key-Value 쌍으로 이루어진 데이터를 저장하는데 사용되고, Key 값을 해시 함수에 통과시켜 만든 해시값을 Index로 사용합니다. Hash Table은 JavaScript 런타임에서 [키 기반의 Collection](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections) 자료형인 [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)과 [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) 객체를 구현할 때 사용됩니다. `Set` 객체는 마치 값만 저장하는 듯이 보이지만, Key와 Value가 일치하는 매핑 방식을 사용할 뿐 Key-Value 형식의 데이터를 저장합니다.
 
-> Maps must be implemented using either hash tables or other mechanisms that, on average, provide access times that are sublinear on the number of elements in the collection. - [ECMAScript 2022 Specification](https://tc39.es/ecma262/#sec-map-objects)
+> Maps must be implemented using either hash tables or other mechanisms that, on average, provide access times that are sublinear on the number of elements in the collection.
+>
+> (ABBR)
+>
+> Set objects must be implemented using either hash tables or other mechanisms that, on average, provide access times that are sublinear on the number of elements in the collection. - [ECMAScript 2022 Specification](https://tc39.es/ecma262/#sec-map-objects)
 
 <br />
 
@@ -890,9 +896,26 @@ Separate Chaining은 해시값이 같으면 다른 공간에 저장하는 것이
 
 <br />
 
-### 9-4. Table Resizing
+### 9-5. Table Resizing
 
 어찌됐든 Hash Table을 구현할 때는 해시 함수가 해시값을 얼마나 균등하게 뱉어낼 수 있는가가 관건입니다. 또한, Open Address 방법을 사용하다보면 결국 정해진 공간을 모두 채우게되고, Seperate Chaining을 사용하다보면 특정 Index가 가리키는 Linked List의 길이가 너무 길어져 값을 찾는 비용이 높아질 수 있습니다. 따라서 Hash Table은 꽉꽉 채우기보다는 어느 정도 비워져있는 것이 성능상 좋다는 것이 중론이고, 일정 크기를 채우면 새로운 Table을 선언해서 데이터를 옮겨담는 작업을 하도록 구현해야합니다. 이때 Seperate Chaining을 사용한다면 Rehashing을 통해 너무 길어진 Linked List의 데이터를 나누도록 합니다.
+
+<br />
+
+## 10. Set
+
+Set은 유일한 값들을 저장할 수 있는 자료구조로, 말그대로 중복 데이터를 허용하지 않는 것이 특징입니다. JavaScript에서는 [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) 객체가 그 구현체입니다. Set은 중복을 허용하지 않기 때문에 Array에서 중복을 제거할 때도 유용하게 사용될 수 있습니다. 위에서도 언급했듯이 내부적으로는 Hash Table을 사용하여 구현되었을 것입니다.
+
+```typescript
+const numbers = [2,3,4,4,2,3,3,4,4,5,5,6,6,7,5,32,3,4,5]
+console.log([...new Set(numbers)]) // [2, 3, 4, 5, 6, 7, 32]
+```
+
+<br />
+
+## 11. Map
+
+JavaScript에서는 [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections) 객체로, Key-Value 형식의 데이터를 저장합니다. ECMAScript 명세에 따라, 내부적으로는 Hash Table을 사용하여 구현되었을 것으로 기대해볼 수 있습니다. [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 <br />
 
@@ -916,3 +939,4 @@ Separate Chaining은 해시값이 같으면 다른 공간에 저장하는 것이
 - [Binary Heap | GeeksForGeeks](https://www.geeksforgeeks.org/binary-heap/) 글을 참고했습니다.
 - [Backend Engineer Interview - xlffm3](https://github.com/xlffm3/backend-engineer-interview/blob/main/data-structure/data-structure.md#q6-deque--arraydeque)
 - [JavaScript와 함께 해시테이블을 파헤쳐보자 | Evans Library](https://evan-moon.github.io/2019/06/25/hashtable-with-js/)
+- [Java HashMap은 어떻게 동작하는가? | Naver D2](https://d2.naver.com/helloworld/831311)
