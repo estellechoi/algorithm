@@ -842,7 +842,7 @@ console.log(arr) // [empty × 10, 10, empty × 89, 100]
 
 ### 9-3. Hash
 
-위와 같은 단점을 해결하기 위해 고안된 개념이 Hash Table인데, Key 값을 바로 사용하는 것이 아니라 해시 함수에 통과시켜 해시값으로 바꾸어 사용하기 때문에 Hash Table이라고 합니다. 해시 함수는 어떤 입력값을 받더라도 고정된 길이의 해시값을 뱉어내기 때문에 늘 원하는 만큼의 메모리 공간 내에서 데이터를 처리할 수 있기 때문입니다. 만들어진 해시값으로 Key 값을 역추적하는 것도 불가능해지고요. 이러한 해시 함수의 특성 때문에 해시 함수는 암호학에서 유용하게 사용되며, [블록체인](https://en.wikipedia.org/wiki/Blockchain)에서 블록을 생성할 때도 사용됩니다. JavaScript에서는 [`crypto.subtle.digest(algorithm, data)`](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest) 웹 API를 사용해서 해시 함수를 만들 수 있겠습니다. 다음은 10진수 해시를 뱉어내는 해시 함수 예시입니다.
+위와 같은 단점을 해결하기 위해 고안된 개념이 Hash Table인데, Key 값을 바로 사용하는 것이 아니라 해시 함수에 통과시켜 해시값으로 바꾸어 사용하기 때문에 Hash Table이라고 합니다. 해시 함수는 어떤 입력값을 받더라도 고정된 길이의 해시값을 뱉어내기 때문에 늘 원하는 만큼의 메모리 공간 내에서 데이터를 처리할 수 있기 때문입니다. 만들어진 해시값으로 Key 값을 역추적하는 것도 불가능해지고요. 이러한 해시 함수의 특성 때문에 해시 함수는 암호학에서 유용하게 사용되며, [블록체인](https://en.wikipedia.org/wiki/Blockchain)에서 블록을 생성할 때도 사용됩니다. JavaScript에서는 [`crypto.subtle.digest(algorithm, data)`](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest) 웹 API를 사용해서 간단한 해시 함수를 만들어볼 수 있겠습니다. 다음은 10진수 해시를 뱉어내는 해시 함수 예시인데, 만약 JavaScript로 Hash Table을 구현하다면 대충 이런식일거다 정도로 간단히 정리해본 것이므로 참고만하셔야합니다!
 
 ```typescript
 const getHash = async (msg: string): Promise<string> => {
