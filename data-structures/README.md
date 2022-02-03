@@ -814,15 +814,17 @@ class Graph<T> implements IGraph<T> {
 
 ## 9. Hash Table (Map)
 
-### 9-1. Direct Address Table
+### 9-1. `Map` in JavaScript
 
-Hash Table은 Key-Value 쌍으로 이루어진 데이터를 저장하는 자료구조로, 데이터를 꺼내는데 사용되는 Key 값은 [해시 함수](https://en.wikipedia.org/wiki/Hash_function)를 통해 해시값으로 변환되며, 이 해시값이 Value와 매핑되는 Index로 사용됩니다. JavaScript 런타임에서는 [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections) 객체가 Hash Table의 구현체일 것이라고 추정해 볼 수 있습니다.
+Hash Table은 Key-Value 쌍으로 이루어진 데이터를 저장하는 자료구조로, 내부적으로는 Array를 사용하여 구현됩니다. Key 값은 [해시 함수](https://en.wikipedia.org/wiki/Hash_function)를 통해 해시값으로 변환되고, 이 해시값을 Index로 사용합니다. JavaScript 런타임에서는 [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections) 객체가 Hash Table의 구현체이거나, 적어도 Hash Table처럼 동작할 것이라고 기대할 수 있으므로, `Map`을 사용하면 됩니다.
 
 > Maps must be implemented using either hash tables or other mechanisms that, on average, provide access times that are sublinear on the number of elements in the collection. - [ECMAScript 2022 Specification](https://tc39.es/ecma262/#sec-map-objects)
 
 <br />
 
-Hash Table은 [Direct Address Table](https://www.geeksforgeeks.org/direct-address-table/)이라는 옛 자료구조에서 시작된 개념으로, Direct Address Table은 입력받은 Value를 곧 Key로 사용하는 데이터 매핑 방식에 기반한 Array 자료구조입니다. Direct Address Table은 원하는 값이 곧 Key이고, 이 Key가 곧 Array의 Index이므로, `10`이라는 값을 꺼내고싶다면 Key 값도 `10`을 사용하면 됩니다. 원하는 값을 편리하게 꺼내 쓸 수 있다는 장점이 있지만, 단점도 분명합니다.
+### 9-2. Direct Address Table
+
+이제 Hash Table 구현에 관련된 내용들을 정리하려고합니다. 그에 앞서 Hash Table은 [Direct Address Table](https://www.geeksforgeeks.org/direct-address-table/)이라는 옛 자료구조에서 시작된 개념으로, Direct Address Table은 입력받은 Value를 곧 Key로 사용하는 데이터 매핑 방식에 기반한 Array 자료구조입니다. Direct Address Table은 원하는 값이 곧 Key이고, 이 Key가 곧 Array의 Index이므로, `10`이라는 값을 꺼내고싶다면 Key 값도 `10`을 사용하면 됩니다. 원하는 값을 편리하게 꺼내 쓸 수 있다는 장점이 있지만, 단점도 분명합니다.
 
 - 원하는 값이 곧 Key이므로, 값을 알고있지 않으면 사용 불가
 
@@ -838,29 +840,35 @@ console.log(arr) // [empty × 10, 10, empty × 89, 100]
 
 <br />
 
-### 9-2. Hash
+### 9-3. Hash
 
-이러한 단점을 해결하기 위해 고안된 개념이 Hash Table인데, Key 값을 바로 사용하는 것이 아니라 해시 함수에 통과시켜 해시값으로 바꾸어 사용합니다. 해시 함수는 어떤 입력값을 받더라도 고정된 길이의 해시값을 뱉어내기 때문에 늘 원하는 만큼의 메모리 공간 내에서 데이터를 처리할 수 있게 되었고, 만들어진 해시값으로 Key 값을 역추적하는 것도 불가능해졌습니다. 이러한 해시 함수의 특성 때문에 해시 함수는 암호학에서 유용하게 사용되며, [블록체인](https://en.wikipedia.org/wiki/Blockchain)에서 블록을 생성할 때도 사용됩니다. JavaScript에서는 [`crypto.subtle.digest(algorithm, data)`](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest) 웹 API를 해시 함수로 사용할 수 있겠습니다. 사용할 알고리즘으로 `SHA-256`을 지정해주면 길이가 `32`인 `ArrayBuffer`를 만들어냅니다.
+위와 같은 단점을 해결하기 위해 고안된 개념이 Hash Table인데, Key 값을 바로 사용하는 것이 아니라 해시 함수에 통과시켜 해시값으로 바꾸어 사용하기 때문에 Hash Table이라고 합니다. 해시 함수는 어떤 입력값을 받더라도 고정된 길이의 해시값을 뱉어내기 때문에 늘 원하는 만큼의 메모리 공간 내에서 데이터를 처리할 수 있기 때문입니다. 만들어진 해시값으로 Key 값을 역추적하는 것도 불가능해지고요. 이러한 해시 함수의 특성 때문에 해시 함수는 암호학에서 유용하게 사용되며, [블록체인](https://en.wikipedia.org/wiki/Blockchain)에서 블록을 생성할 때도 사용됩니다. JavaScript에서는 [`crypto.subtle.digest(algorithm, data)`](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest) 웹 API를 사용해서 해시 함수를 만들 수 있겠습니다. 다음은 10진수 해시를 뱉어내는 해시 함수 예시입니다.
 
 ```typescript
-const getIndex = async (msg: string, size: number): Promise<ArrayBuffer> => {
-    const data = new TextEncoder().encode(msg)
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data)
-    const hashArray = Array.from(new Uint8Array(hashBuffer))
-    const hashHex = hashArray.map(item => item.toString(16).padStart(2, '0')).join('')
-    return hashHex
+const getHash = async (msg: string): Promise<string> => {
+    const data = new TextEncoder().encode(msg) // // encode as (utf-8) Uint8Array
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data) // returns Promise<ArrayBuffer> of 256 bits (= 32 bytes)
+    const hashArray = Array.from(new Uint8Array(hashBuffer)) // get an array of 8-bit int
+    const hash = hashArray.map(h => h.toString(10)).join('')
+    return hash
 }
 ```
 
 <br />
 
-해시 함수에 통과시켜 얻은 해시값은 한 번 더 원하는 길이로 정제된 후 Array의 Index로 사용합니다. 이는 Hash Table의 공간효율성을 극대화하기 위함인데, 가령 해시 함수에서 자주 사용되는 [SHA256](https://en.wikipedia.org/wiki/Secure_Hash_Algorithms) 알고리즘은 32비트 길이의 해시를 만들어내기 때문에, 별도의 정제 과정이 없다면 가능한 해시의 경우의 수인 2³² 길이의 Array를 모든 Hash Table이 가지고 있어야 합니다.  이때 원하는 길이의 Array로 Hash Table의 크기를 제한하기 위해 [나머지 연산](https://en.wikipedia.org/wiki/Modulo_operation)을 사용하여 최종적으로 사용할 Index를 얻어냅니다.
+해시 함수에 통과시켜 얻은 해시값은 한 번 더 원하는 길이로 정제된 후 Array의 Index로 사용됩니다. 이는 Hash Table의 공간효율성을 극대화하기 위함인데, 가령 해시 함수에서 자주 사용되는 [SHA256](https://en.wikipedia.org/wiki/Secure_Hash_Algorithms) 알고리즘은 256 Bits 해시를 만들어내기 때문에, 별도의 정제 과정이 없다면 가능한 해시의 경우의 수인 2²⁵⁶ 길이의 Array를 모든 Hash Table이 가지고 있어야 합니다. 이때 원하는 길이의 Array로 Hash Table의 크기를 제한하기 위해 [나머지 연산](https://en.wikipedia.org/wiki/Modulo_operation)을 사용하여 최종적으로 사용할 Index를 얻어냅니다.
+
+```typescript
+const getIndex = async (msg: string, size: number): Promise<number> => {
+    return parseInt(await getHash(msg)) % size
+}
+```
 
 <br />
 
-### 9-3. 해시 충돌(Collision)
+### 9-4. 해시 충돌(Collision)
 
-Hash Table의 유명한 단점은 해시 충돌인데, 다른 값을 넣어도 해시 함수가 만들어내는 해시값이 완전히 일치하여 충돌이 일어날 수 있습니다. 이처럼 해시 테이블에는 해시의 충돌이라는 단점이 있기 때문에 Hash Table을 구현할 때 가장 중요한 것은 해시 함수가 얼마나 균일하게 해시값을 퍼트릴 수 있느냐라고 볼 수도 있습니다. 이 해시 충돌을 방지하기 위해 몇 가지 추가로 고안된 방법들이 있는데, 대표적으로 Open Address와 Separate Chaining이 있습니다.
+Hash Table의 유명한 단점은 해시 충돌인데, 해시 함수가 만들어내는 해시값이 완전히 일치하여 충돌이 일어날 수 있기 때문입니다. 다른 값을 넣더라도 말이죠. 이처럼 해시의 충돌이라는 단점이 있기 때문에 Hash Table을 구현할 때 가장 중요한 것은 해시 함수가 얼마나 균일하게 해시값을 퍼트릴 수 있느냐라고 볼 수도 있습니다. 이 해시 충돌을 방지하기 위해 몇 가지 추가로 고안된 방법들이 있는데, 대표적으로 Open Address와 Separate Chaining이 있습니다.
 
 <br />
 
@@ -872,13 +880,13 @@ Open Address, 개방 주소법은 해시 충돌 발생시 새로운 주소를 �
 
 - 제곱 탐사법(Quadratic Probing): 탐사폭이 고정되어있지 않고, 제곱수씩 늘어남 (`1²`, `2²`, `3²`, ...). 선형 탐사법보다 낫지만 여전히 군집화 문제에 취약함.
 
-- 이중해싱(Double Hashing): 충돌 발생시 탐사폭을 얻기 위해 해시 함수를 이중으로 사용하는 방법. 이때 해싱 중복을 피하기 위해 Hash Table 사이즈는 [소수](https://ko.wikipedia.org/wiki/%EC%86%8C%EC%88%98_(%EC%88%98%EB%A1%A0))를 사용하는 것이 좋음.
+- 이중해싱(Double Hashing): 충돌 발생시 탐사폭을 얻기 위해 해시 함수를 이중으로 사용하는 방법. 군집화 문제는 피할 수 있지만 연산량이 많음. 해싱 중복을 피하기 위해 Hash Table의 크기는 [소수](https://ko.wikipedia.org/wiki/%EC%86%8C%EC%88%98_(%EC%88%98%EB%A1%A0))를 사용하는 것이 좋음.
 
 <br />
 
 #### Separate Chaining
 
-Separate Chaining은 해시 충돌을 우회하는 방법으로, 해시값이 같으면 다른 곳에 저장하는 것이 아니라 원래 저장되어야할 공간에 List 형태로 값을 쌓는 방식입니다. 예를 들어, 어떤 해시 함수가 계속 Index `1`을 가리키도록 해시값을 뱉어낸다면, 입력된 값들은 모두 Index `1` 공간의 List 자료구조에 저장됩니다. 이때 Linked List가 주로 사용되는데, 값을 추가할 때의 효율성을 극대화하기 위해 List의 끝에 값을 붙이지않고 Head에 추가하는 방법이 일반적입니다. Linked List에서는 어떤 값에 접근하려면 Head부터 모든 노드를 순회해야하기 때문이죠. 값을 찾을 때는 어쩔 수 없이 Linked List를 순회해야하므로 시간복잡도는 `O(n)`입니다.
+Separate Chaining은 해시값이 같으면 다른 공간에 저장하는 것이 아니라 원래 저장되어야할 공간에 List 형태로 값을 쌓는 방식입니다. 예를 들어, 어떤 해시 함수가 계속 Index `1`을 가리키도록 해시값을 뱉어낸다면, 입력된 값들은 모두 Index `1` 공간의 List 자료구조에 저장됩니다. 이때 Linked List가 주로 사용되는데, 값을 추가할 때의 효율성을 극대화하기 위해 List의 끝에 값을 붙이지않고 Head에 추가하는 방법이 일반적입니다. Linked List에서는 어떤 값에 접근하려면 Head부터 모든 노드를 순회해야하기 때문이죠. 값을 찾을 때는 어쩔 수 없이 Linked List를 순회해야하므로 시간복잡도는 `O(n)`입니다.
 
 <br />
 
