@@ -904,7 +904,9 @@ Separate Chaining은 해시값이 같으면 다른 공간에 저장하는 것이
 
 ## 10. Set
 
-Set은 유일한 값들을 저장할 수 있는 자료구조로, 말그대로 중복 데이터를 허용하지 않는 것이 특징입니다. JavaScript에서는 [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) 객체가 그 구현체입니다. Set은 중복을 허용하지 않기 때문에 Array에서 중복을 제거할 때도 유용하게 사용될 수 있습니다. 위에서도 언급했듯이 내부적으로는 Hash Table을 사용하여 구현되었을 것입니다.
+### 10-1. `Set`
+
+Set은 유일한 값들을 저장할 수 있는 자료구조로, 말그대로 중복 데이터를 허용하지 않는 것이 특징입니다. JavaScript에서는 [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) 객체가 그 구현체입니다. Set은 중복을 허용하지 않기 때문에 Array에서 중복 원소들을 제거할 때 유용하게 사용할 수 있습니다. 위에서도 언급했듯이 내부적으로는 Hash Table을 사용하여 구현되었을 것입니다.
 
 ```typescript
 const numbers = [2,3,4,4,2,3,3,4,4,5,5,6,6,7,5,32,3,4,5]
@@ -913,9 +915,25 @@ console.log([...new Set(numbers)]) // [2, 3, 4, 5, 6, 7, 32]
 
 <br />
 
+### 10-2. `WeakSet`
+
+`Set`과의 가장 큰 차이점은, [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections#weakset_object)은 `object` 타입만 허용한다는 것과, 저장된 객체를 참조하는 대상이 사라지면 더이상 갖고있지 않고 쓰레기통으로 보내버린다는 것입니다. (Garbage Collection)
+
+> The WeakSet is weak: References to objects in the collection are held weakly. If there is no other reference to an object stored in the WeakSet, they can be garbage collected. That also means that there is no list of current objects stored in the collection. - [Keyed collections | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections#weakset_object)
+
+<br />
+
 ## 11. Map
 
-JavaScript에서는 [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections) 객체로, Key-Value 형식의 데이터를 저장합니다. ECMAScript 명세에 따라, 내부적으로는 Hash Table을 사용하여 구현되었을 것으로 기대해볼 수 있습니다. [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+### 11-1. `Map`
+
+JavaScript에서는 [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections) 객체로, Key-Value 형식의 데이터를 저장합니다. ECMAScript 명세에 따라, 내부적으로는 Hash Table을 사용하여 구현되었을 것으로 기대해볼 수 있습니다. 흔히 [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) 객체와 비교되는데, `Object`의 Key는 `string`/`symbol` 타입만 가능한 반면 `Map`의 Key로는 모든 타입의 값을 사용할 수 있고, `Map`은 Iterate했을 때 데이터를 Insert했던 순서대로 접근할 수 있습니다. 자세한 내용은 MDN의 [Object and Map compared](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections#object_and_map_compared)에서 확인할 수 있습니다.
+
+<br />
+
+### 11-2. `WeakMap`
+
+`WeakSet`과 비슷합니다. [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections#weakmap_object)의 Key로는 `Map`과는 다르게 `object` 타입의 값만 사용할 수 있고, 이 Key 객체를 참조하는 대상이 없어지면 Garbage Collect 됩니다.
 
 <br />
 
