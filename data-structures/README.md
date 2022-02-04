@@ -917,7 +917,7 @@ console.log([...new Set(numbers)]) // [2, 3, 4, 5, 6, 7, 32]
 
 ### 10-2. `WeakSet`
 
-`Set`과의 가장 큰 차이점은, [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections#weakset_object)은 `object` 타입만 허용한다는 것과, 저장된 객체를 참조하는 대상이 사라지면 더이상 갖고있지 않고 쓰레기통으로 보내버린다는 것입니다. (Garbage Collection)
+`Set`과의 가장 큰 차이점은, [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections#weakset_object)은 `object` 타입만 허용한다는 것과, 저장된 객체를 참조하는 대상이 사라지면 더이상 갖고있지 않고 쓰레기통으로 보내버린다는 것입니다. ([Garbage Collection](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management#garbage_collection))
 
 > The WeakSet is weak: References to objects in the collection are held weakly. If there is no other reference to an object stored in the WeakSet, they can be garbage collected. That also means that there is no list of current objects stored in the collection. - [Keyed collections | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections#weakset_object)
 
