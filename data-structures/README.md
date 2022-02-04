@@ -954,7 +954,7 @@ JavaScript에서는 [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScr
 - [Binary Search Tree | Set 1 (Search and Insertion) | GeeksForGeeks](https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/)
 - [Graph and its representations | GeeksForGeeks](https://www.geeksforgeeks.org/graph-and-its-representations/)
 - [Implementing Heaps in JavaScript - Ankita Masand](https://blog.bitsrc.io/implementing-heaps-in-javascript-c3fbf1cb2e65)
-- [Binary Heap | GeeksForGeeks](https://www.geeksforgeeks.org/binary-heap/) 글을 참고했습니다.
+- [Binary Heap | GeeksForGeeks](https://www.geeksforgeeks.org/binary-heap/)
 - [Backend Engineer Interview - xlffm3](https://github.com/xlffm3/backend-engineer-interview/blob/main/data-structure/data-structure.md#q6-deque--arraydeque)
 - [JavaScript와 함께 해시테이블을 파헤쳐보자 | Evans Library](https://evan-moon.github.io/2019/06/25/hashtable-with-js/)
 - [Java HashMap은 어떻게 동작하는가? | Naver D2](https://d2.naver.com/helloworld/831311)
